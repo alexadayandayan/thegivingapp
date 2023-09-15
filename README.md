@@ -1,1 +1,1 @@
-# thegivingapp
+# The Giving App
