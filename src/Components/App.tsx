@@ -3,7 +3,6 @@
 // import viteLogo from '/electron-vite.animate.svg'
 import tgaLogo from '../assets/TGA.png'
 import '../App.scss'
-import { setWindowTitle } from '@/Data/IPC/IPCMessages';
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -23,10 +22,6 @@ function App() {
       </div>
       <h1>THE GIVING APP</h1>
       <div className="card">
-        <button onClick={() => setWindowTitle("...Freely you have received; freely give.")}>
-          {/* count is {count} */}
-          Change Title
-        </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>

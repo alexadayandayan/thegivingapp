@@ -1,8 +1,11 @@
 {
   "name": "the-giving-app",
+  "homepage": "https://alexadayandayan.github.io/thegivingapp/",
   "private": true,
   "version": "0.0.1",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
     "build:win": "npm run build && electron-builder --win --config",
@@ -28,6 +31,7 @@
     "eslint": "^8.48.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "gh-pages": "^6.0.0",
     "sass": "^1.67.0",
     "scss": "^0.2.4",
     "typescript": "^5.2.2",
