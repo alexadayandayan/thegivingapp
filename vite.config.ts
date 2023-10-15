@@ -16,7 +16,7 @@ export default defineConfig({
         vite: {
           build: {
             rollupOptions: {
-              external: ['sqlite3', 'query'],
+              external: ['sqlite3', 'query', 'store'],
             },
           },
         },

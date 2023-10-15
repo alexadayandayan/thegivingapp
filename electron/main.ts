@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { getQuery } from './query';
 import path from 'node:path';
 
+import { login, getUser } from './store';
 // The built directory structure
 //
 // ├─┬─┬ dist
@@ -43,7 +44,17 @@ function createWindow() {
   }
 
   ///////////////////////////////////// IPC HANDLERS //////////////////////////////
-  ipcMain.handle('ping', () => 'pong');
+  ipcMain.on("get/user", async (event, args) => {
+    const user = await getUser();
+    event.returnValue = user;
+  });
+
+  // Invoke
+  ipcMain.handle("login", async (_event, args) => {
+    const q = `SELECT * FROM Users WHERE Username = '${args.username}'`;
+    const data = await getQuery(q);
+    return data;
+  });
 
   // Invoke
   ipcMain.handle("users", async (_event: any, _args: any) => {
@@ -53,6 +64,8 @@ function createWindow() {
     return data;
   });
 }
+
+///////////////////////////////////////////////////////////////////////////////////
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

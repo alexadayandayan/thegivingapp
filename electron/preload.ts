@@ -1,3 +1,4 @@
+import { IUser } from '@/data/user';
 import { contextBridge, ipcRenderer } from 'electron'
 
 // --------- Expose some API to the Renderer process ---------
@@ -127,6 +128,7 @@ const WINDOW_API = {
   users: () => ipcRenderer.invoke("users"),
   
   // Send async
+  login: (args: IUser) => ipcRenderer.invoke("login", args),
   isLoggedIn: () => ipcRenderer.sendSync("isLoggedIn"),
   getUser: () => ipcRenderer.sendSync("get/user"),
 }

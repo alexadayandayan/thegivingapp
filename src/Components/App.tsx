@@ -1,41 +1,56 @@
-import tgaLogo from '../assets/TGA.png';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import bcrypt from 'bcryptjs';
 import '../App.scss';
+import { IUser } from '../data/user';
 
 function App() {
-  const [getUser, setUser] = useState<any>(null);
+  const usernameInputRef: any = useRef();
+  const passwordInputRef: any = useRef();
+  let [isInvalid, setIsInvalid] = useState(false);
+  let [getProfile, setProfile] = useState<IUser | any>(null);
 
-  const func = async () => {
-    const response = await window.api.ping();
-    const user = await window.api.users();
+  const handleLoginForm = async () => {
+    const username = usernameInputRef?.current?.value;
+    const password = passwordInputRef?.current?.value;
 
-    console.log(response); // prints out 'pong'
-    console.log(user); // prints out 'pong'
-    setUser(user);
+    const prof = await window.api.login({ username: username });
+    setProfile(prof);
+
+    // Check if login matched
+    setIsInvalid(bcrypt.compareSync(password, prof?.Password));
   };
 
   return (
-    <>
-      <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={tgaLogo} className="logo tga" alt="TGA logo" />
-        </a>
-      </div>
-      <h1>THE GIVING APP</h1>
-
-      <button onClick={() => func()}>
-        count is {getUser && getUser?.Username}
-      </button>
-
-      <div className="card">
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='App'>
+      <header className='App-header'>
+        <form>
+          <input style={{ padding: '15px', borderRadius: '10px', margin: '10px' }} ref={usernameInputRef} type='username' placeholder='Username' />
+          <input style={{ padding: '15px', borderRadius: '10px', margin: '10px' }} ref={passwordInputRef} type='password' placeholder='Password' />
+          <button
+            type='submit'
+            style={{ padding: '15px', borderRadius: '10px', margin: '10px' }}
+            onClick={e => {
+              e.preventDefault();
+              handleLoginForm();
+            }}>
+            Log In
+          </button>
+          <br />
+        </form>
+        <br />
+        <br />
+        <span>
+          {isInvalid ? (
+            <span>Hello {getProfile?.Name}
+              <br />
+              Login Details Matched {isInvalid}
+            </span>
+          ) : (
+            <span>Invalid login details</span>
+          )}
+        </span>
+      </header>
+    </div>
   );
 }
 
