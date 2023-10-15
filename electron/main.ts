@@ -2,7 +2,6 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { getQuery } from './query';
 import path from 'node:path';
 
-import { login, getUser } from './store';
 // The built directory structure
 //
 // ├─┬─┬ dist
@@ -44,10 +43,10 @@ function createWindow() {
   }
 
   ///////////////////////////////////// IPC HANDLERS //////////////////////////////
-  ipcMain.on("get/user", async (event, args) => {
-    const user = await getUser();
-    event.returnValue = user;
-  });
+  // ipcMain.on("get/user", async (event, args) => {
+  //   const user = await getUser();
+  //   event.returnValue = user;
+  // });
 
   // Invoke
   ipcMain.handle("login", async (_event, args) => {
