@@ -11,8 +11,7 @@ import GivingEdit from '../Pages/GivingEdit';
 import Reports from '../Pages/Reports';
 import Settings from '../Pages/Settings';
 import '../App.scss';
-import 'semantic-ui-css/semantic.min.css'
-
+import 'semantic-ui-css/semantic.min.css';
 
 function App() {
   return (
@@ -36,4 +35,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

@@ -27,20 +27,13 @@
         "src/*"
       ],
       "Components/*": [
-        "./src/Components/*"
-      ],
-      "Interfaces/": [
-        "./src/Data/Interfaces/",
-        "./src/Data/Interfaces/*"
-      ],
-      "Objects/*": [
-        "./src/Data/Objects/*"
-      ],
-      "Utilities/*": [
-        "./src/Utilities"
-      ],
-      "IPC/": ["./src/Data/IPC/*"]
-    }
+        "src/components/*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
   },
   "include": [
     "src",

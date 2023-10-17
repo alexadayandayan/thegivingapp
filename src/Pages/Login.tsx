@@ -1,12 +1,32 @@
 import { Button, Form, Grid, Segment, Divider } from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
 import tgaLogo from '../assets/TGA.png';
+import { useRef, useState } from 'react';
+import bcrypt from 'bcryptjs';
+import { IUser } from '../data/user';
 
 export default function Login() {
     let navigate = useNavigate();
-    const onLogin = () => {
-        navigate('/dashboard')        
-    }
+    const usernameInputRef: any = useRef();
+    const passwordInputRef: any = useRef();
+    let [isInvalid, setIsInvalid] = useState(false);
+    let [getProfile, setProfile] = useState<IUser | any>(null);
+
+    const handleLoginForm = async () => {
+        const username = usernameInputRef?.current?.value;
+        const password = passwordInputRef?.current?.value;
+
+        const prof = await window.api.login({ username: username });
+        setProfile(prof);
+
+        // Check if login matched
+        setIsInvalid(bcrypt.compareSync(password, prof?.Password));
+
+        if(bcrypt.compareSync(password, prof?.Password)) {
+            navigate('/dashboard')     
+        }
+    };
+    
     return (
         <div className="login-block">
             <Segment placeholder className="login-block__form">
@@ -20,22 +40,41 @@ export default function Login() {
 
                     <Grid.Column verticalAlign='middle'>
                         <Form>
-                          <Form.Input
-                            icon='user'
-                            iconPosition='left'
-                            label='Username'
-                            placeholder='Username'
-                          />
-                          <Form.Input
-                            icon='lock'
-                            iconPosition='left'
-                            label='Password'
-                            type='password'
-                            placeholder='Password'
-                          />
-
-                          <Button onClick={onLogin} content='Login' positive />
+                            <Form.Input
+                                icon='user'
+                                iconPosition='left'
+                                label='Username'
+                                placeholder='Username'
+                                type='username'
+                                ref={usernameInputRef} 
+                            />
+                            <Form.Input
+                                icon='lock'
+                                iconPosition='left'
+                                label='Password'
+                                placeholder='Password'
+                                type='password'
+                                ref={passwordInputRef}
+                            />
+                            <Button type='submit' content='Login' positive 
+                                onClick={e => {
+                                    e.preventDefault();
+                                    handleLoginForm();
+                                }} 
+                            />
                         </Form>
+                        {/*<br />
+                        <br />
+                        <span>
+                            {isInvalid ? (
+                                <span>Hello {getProfile?.Name}
+                                    <br />
+                                    Login Details Matched {isInvalid}
+                                </span>
+                            ) : (
+                                <span>Invalid login details</span>
+                            )}
+                        </span>*/}
                     </Grid.Column>
                 </Grid>
 

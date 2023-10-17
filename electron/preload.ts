@@ -1,9 +1,5 @@
+import { IUser } from '@/data/user';
 import { contextBridge, ipcRenderer } from 'electron'
-import { IPC_ACTIONS } from './IPC/IPCActions';
-
-const {
-  SET_WINDOW_TITLE
-} = IPC_ACTIONS.Window;
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer))
@@ -122,7 +118,19 @@ window.onmessage = ev => {
 setTimeout(removeLoading, 4999)
 
 
-// Anything that you add here should be also added to IPCMessages.ts
-contextBridge.exposeInMainWorld("ipcAPI", {
-  setWindowTitle: (title: string) => ipcRenderer.send(SET_WINDOW_TITLE, title)
-})
+///////////////////////////////////////////////////////////////////
+const WINDOW_API = {
+  //NOTE: CUD: use sendSync, Fetching/Get: invoke
+  // test
+  ping: () => ipcRenderer.invoke('ping'),
+  dbQuery: () => ipcRenderer.invoke('dbQuery'),
+  // Invoke
+  users: () => ipcRenderer.invoke("users"),
+  
+  // Send async
+  login: (args: IUser) => ipcRenderer.invoke("login", args),
+  isLoggedIn: () => ipcRenderer.sendSync("isLoggedIn"),
+  getUser: () => ipcRenderer.sendSync("get/user"),
+}
+
+contextBridge.exposeInMainWorld("api", WINDOW_API);
