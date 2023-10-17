@@ -1,34 +1,37 @@
-// import { useState } from 'react'
-// import reactLogo from '../assets/react.svg'
-// import viteLogo from '/electron-vite.animate.svg'
-import tgaLogo from '../assets/TGA.png'
-import '../App.scss'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from '../Pages/Login';
+import Dashboard from '../Pages/Dashboard';
+import Members from '../Pages/Members';
+import MemberView from '../Pages/MemberView';
+import MemberAdd from '../Pages/MemberAdd';
+import MemberEdit from '../Pages/MemberEdit';
+import Giving from '../Pages/Giving';
+import GivingAdd from '../Pages/GivingAdd';
+import GivingEdit from '../Pages/GivingEdit';
+import Reports from '../Pages/Reports';
+import Settings from '../Pages/Settings';
+import '../App.scss';
+import 'semantic-ui-css/semantic.min.css'
+
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        {/* <a href="https://electron-vite.github.io" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a> */}
-        <a href="https://react.dev" target="_blank">
-          <img src={tgaLogo} className="logo tga" alt="TGA logo" />
-        </a>
-      </div>
-      <h1>THE GIVING APP</h1>
-      <div className="card">
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Routes>
+            <Route index element={<Login />} />  
+            <Route path="/dashboard" element={<Dashboard />} /> 
+            <Route path="/members" element={<Members />} />    
+            <Route path="/member-view" element={<MemberView />} />  
+            <Route path="/member-add" element={<MemberAdd />} />   
+            <Route path="/member-edit" element={<MemberEdit />} />    
+            <Route path="/giving" element={<Giving />} />     
+            <Route path="/giving-add" element={<GivingAdd />} />  
+            <Route path="/giving-edit" element={<GivingEdit />} />   
+            <Route path="/reports" element={<Reports />} />     
+            <Route path="/settings" element={<Settings />} />     
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

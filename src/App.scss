@@ -2,14 +2,17 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  height: 150px;
+  width: auto;
+  padding: 20px;
   will-change: filter;
   transition: filter 300ms;
+  &-small {
+    height: 50px;
+  }
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
@@ -33,10 +36,48 @@
   }
 }
 
-.card {
-  padding: 2em;
+.overflow-x {
+  min-height:400px;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
-.read-the-docs {
-  color: #888;
+.header-block {
+  margin-bottom: 20px;
+}
+
+.login-block {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  height: 89vh;
+  &__form {
+    align-items: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  &__logo {
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    h2 {
+      padding-left: 15px;
+    }
+  }
+}
+.tga {
+  padding-bottom: 20px;
+}
+.text-white {
+  color: white;
+}
+.text-center {  
+    text-align: center;
+    margin: 0 auto;
+    width: auto;
+    display: flex;
+    align-items: center;
 }
