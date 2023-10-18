@@ -3,14 +3,16 @@ import { contextBridge, ipcRenderer } from "electron";
 
 ///////////////////////////////////////////////////////////////////
 const WINDOW_API = {
-  //NOTE: CUD: use sendSync, Fetching/Get: invoke
+  //NOTE: regular call: use sendSync, db transaction use: invoke
+
+  // sendSync
   isLoggedIn: () => ipcRenderer.sendSync("isLoggedIn"),
   logout: () => ipcRenderer.sendSync("logout"),
-
-  // Send async
-  login: (args: IUser) => ipcRenderer.invoke("login", args),
   getCurrentUser: () => ipcRenderer.sendSync("getCurrentUser"),
-  getMembers: () => ipcRenderer.sendSync("getMembers"),
+
+  // invoke
+  login: (args: IUser) => ipcRenderer.invoke("login", args),
+  getMembers: () => ipcRenderer.invoke("getMembers"),
 };
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);

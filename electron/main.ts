@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { getQuery } from "./query";
+import { getAllQuery, getQuery } from "./query";
 import path from "node:path";
 import bcrypt from "bcryptjs";
 import { getCurrentUser, isLoggedIn, login, logout } from "./store";
@@ -10,9 +10,13 @@ ipcMain.on("isLoggedIn", async (event) => {
   event.returnValue = isLog;
 });
 
-ipcMain.on("getCurrentUser", async (event, _args) => {
+ipcMain.on("getCurrentUser", async (event) => {
   const user = await getCurrentUser();
   event.returnValue = user;
+});
+
+ipcMain.on("logout", async () => {
+  return await logout();
 });
 
 // Invoke
@@ -25,11 +29,13 @@ ipcMain.handle("login", async (_event, args) => {
   }
 });
 
-ipcMain.on("logout", async () => {
-  return await logout();
+ipcMain.handle("getMembers", async (_event) => {
+  const q = `SELECT * FROM Members`;
+  const data = await getAllQuery(q);
+  return data;
 });
 
-ipcMain.handle("users", async (_event: any, _args: any) => {
+ipcMain.handle("users", async (_event: any) => {
   const q = `SELECT * FROM Users`;
   const data = await getQuery(q);
   return await login(data);
