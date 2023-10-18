@@ -20,7 +20,6 @@ const memberOptions = [
 
 export default function GivingAdd() {
     const [selectedMember, setSelectedMember] = useState(null);
-    console.log(selectedMember);
     let navigate = useNavigate();
     const onGivingSave = () => {
         navigate('/giving')        

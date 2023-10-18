@@ -7,7 +7,6 @@ import { isLoggedIn, login, logout } from "./store";
 ///////////////////////////////////// IPC HANDLERS //////////////////////////////
 ipcMain.on("isLoggedIn", async (event) => {
   const isLog = await isLoggedIn();
-  console.log(isLog);
   event.returnValue = isLog;
 });
 
@@ -15,13 +14,15 @@ ipcMain.on("isLoggedIn", async (event) => {
 ipcMain.handle("login", async (_event, args) => {
   const q = `SELECT * FROM Users WHERE Username = '${args.username}'`;
   const data = await getQuery(q);
-  console.log(data);
-  if (comparePassword(args?.password, data?.Password)) {
-    console.log("successful compare");
 
+  if (comparePassword(args?.password, data?.Password)) {
     //Save to localstorage
     return await login(data);
   }
+});
+
+ipcMain.on("logout", async () => {
+  return await logout();
 });
 
 ipcMain.handle("users", async (_event: any, _args: any) => {
@@ -100,8 +101,6 @@ app.whenReady().then(createWindow);
 const comparePassword = (password: string, hash: string) => {
   try {
     // Compare password
-    console.log("password: " + password);
-    console.log("hash: " + hash);
     return bcrypt?.compareSync(password, hash);
   } catch (error) {
     console.log(error);

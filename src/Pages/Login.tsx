@@ -1,6 +1,6 @@
+import tgaLogo from "../assets/TGA.png";
 import { Button, Form, Grid, Segment, Divider } from "semantic-ui-react";
 import { useNavigate } from "react-router";
-import tgaLogo from "../assets/TGA.png";
 import { useEffect } from "react";
 
 export default function Login() {

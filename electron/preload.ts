@@ -123,6 +123,7 @@ setTimeout(removeLoading, 4999);
 const WINDOW_API = {
   //NOTE: CUD: use sendSync, Fetching/Get: invoke
   isLoggedIn: () => ipcRenderer.sendSync("isLoggedIn"),
+  logout: () => ipcRenderer.sendSync("logout"),
 
   // Send async
   login: (args: IUser) => ipcRenderer.invoke("login", args),
