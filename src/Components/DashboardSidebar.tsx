@@ -8,7 +8,7 @@ export default function DashboardSidebar() {
     const onLogout = () => {
         window.api.logout();
         // Navigate to login page
-        navigate('/')        
+        navigate('/')     
     }
     const onDashboard = () => {
         navigate('/dashboard')        

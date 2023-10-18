@@ -1,14 +1,15 @@
+import { IUser } from "@/data/user";
 import Store from "electron-store";
 
 const store = new Store();
 
-const isLoggedIn = async (): Promise<any> => {
-  return store.get("isLoggedIn");
+const isLoggedIn = async (): Promise<boolean> => {
+  return store.get("isLoggedIn") as boolean;
 };
 
-const login = async (user: string) => {
+const login = async (user: IUser) => {
   store.set("isLoggedIn", true);
-  store.set("user", user);
+  store.set("currentUser", user);
   return true;
 };
 
@@ -17,8 +18,8 @@ const logout = async () => {
   store.delete("user");
 };
 
-const getUser = async (): Promise<any> => {
-  return store.get("user");
+const getCurrentUser = async (): Promise<IUser> => {
+  return store.get("currentUser") as IUser;
 };
 
-export { isLoggedIn, login, logout, getUser };
+export { isLoggedIn, login, logout, getCurrentUser };

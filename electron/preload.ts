@@ -1,6 +1,21 @@
 import { IUser } from "@/data/user";
 import { contextBridge, ipcRenderer } from "electron";
 
+///////////////////////////////////////////////////////////////////
+const WINDOW_API = {
+  //NOTE: CUD: use sendSync, Fetching/Get: invoke
+  isLoggedIn: () => ipcRenderer.sendSync("isLoggedIn"),
+  logout: () => ipcRenderer.sendSync("logout"),
+
+  // Send async
+  login: (args: IUser) => ipcRenderer.invoke("login", args),
+  getCurrentUser: () => ipcRenderer.sendSync("getCurrentUser"),
+  getMembers: () => ipcRenderer.sendSync("getMembers"),
+};
+
+contextBridge.exposeInMainWorld("api", WINDOW_API);
+
+///////////////////////////////////////////////////////////////////
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld("ipcRenderer", withPrototype(ipcRenderer));
 
@@ -118,16 +133,3 @@ window.onmessage = (ev) => {
 };
 
 setTimeout(removeLoading, 4999);
-
-///////////////////////////////////////////////////////////////////
-const WINDOW_API = {
-  //NOTE: CUD: use sendSync, Fetching/Get: invoke
-  isLoggedIn: () => ipcRenderer.sendSync("isLoggedIn"),
-  logout: () => ipcRenderer.sendSync("logout"),
-
-  // Send async
-  login: (args: IUser) => ipcRenderer.invoke("login", args),
-  getUser: () => ipcRenderer.sendSync("get/user"),
-};
-
-contextBridge.exposeInMainWorld("api", WINDOW_API);

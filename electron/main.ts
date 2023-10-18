@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import { getQuery } from "./query";
 import path from "node:path";
 import bcrypt from "bcryptjs";
-import { isLoggedIn, login, logout } from "./store";
+import { getCurrentUser, isLoggedIn, login, logout } from "./store";
 
 ///////////////////////////////////// IPC HANDLERS //////////////////////////////
 ipcMain.on("isLoggedIn", async (event) => {
@@ -10,11 +10,15 @@ ipcMain.on("isLoggedIn", async (event) => {
   event.returnValue = isLog;
 });
 
+ipcMain.on("getCurrentUser", async (event, _args) => {
+  const user = await getCurrentUser();
+  event.returnValue = user;
+});
+
 // Invoke
 ipcMain.handle("login", async (_event, args) => {
   const q = `SELECT * FROM Users WHERE Username = '${args.username}'`;
   const data = await getQuery(q);
-
   if (comparePassword(args?.password, data?.Password)) {
     //Save to localstorage
     return await login(data);
