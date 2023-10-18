@@ -15,7 +15,7 @@ const login = async (user: IUser) => {
 
 const logout = async () => {
   store.delete("isLoggedIn");
-  store.delete("user");
+  store.delete("currentUser");
 };
 
 const getCurrentUser = async (): Promise<IUser> => {
