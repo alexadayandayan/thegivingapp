@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import tgaLogo from '../assets/TGA.png';
 import { useRef, useState } from 'react';
 import bcrypt from 'bcryptjs';
-import { IUser } from '../data/user';
+import { IUser } from '../Data/user';
 
 export default function Login() {
     let navigate = useNavigate();
