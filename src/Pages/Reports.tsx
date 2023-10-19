@@ -1,7 +1,5 @@
-import { Menu, Grid, Icon, Table, Tab, Form, Button, Message } from 'semantic-ui-react';
-import { useNavigate } from 'react-router';
-import DashboardSidebar from '../Components/DashboardSidebar';
-import React from 'react';
+import { Grid, Icon, Tab, Form, Message } from 'semantic-ui-react';
+import DashboardSidebar from '../components/DashboardSidebar';
 
 const yearOptions = [
   { key: '2020', text: '2020', value: '2020' },
@@ -35,10 +33,10 @@ const genderOptions = [
   { key: 'M', text: 'Male', value: 'male' },
   { key: 'F', text: 'Female', value: 'female' }
 ]
-const statusOptions = [
-  { key: 'active', text: 'Active', value: 'active' },
-  { key: 'inactive', text: 'Inactive', value: 'I=inactive' }
-]
+// const statusOptions = [
+//   { key: 'active', text: 'Active', value: 'active' },
+//   { key: 'inactive', text: 'Inactive', value: 'I=inactive' }
+// ]
 
 const panes = [
   {

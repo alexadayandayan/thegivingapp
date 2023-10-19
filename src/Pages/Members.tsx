@@ -1,4 +1,4 @@
-import DashboardSidebar from "../Components/DashboardSidebar";
+import DashboardSidebar from "../components/DashboardSidebar";
 import { Grid, Icon, Header, Image, Table, Button } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import { IMember } from "../data/member";
@@ -9,7 +9,7 @@ export default function Members() {
   let allMembers = [];
 
   const getAllMembers = async () => {
-    allMembers = await window.api.getMembers();
+    allMembers = await window.api.getMembers() as IMember | any;
     console.log(allMembers);
   };
 

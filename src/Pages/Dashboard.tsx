@@ -1,7 +1,5 @@
-import { Menu, Grid, Icon, Table } from "semantic-ui-react";
-import { useNavigate } from "react-router";
-import DashboardSidebar from "../Components/DashboardSidebar";
-import React from "react";
+import { Grid, Table } from "semantic-ui-react";
+import DashboardSidebar from "../components/DashboardSidebar";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,8 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import faker from "faker";
-import { IUser } from "@/data/user";
+import * as faker from '@faker-js/faker';
+import { IUser } from "../data/user";
 
 ChartJS.register(
   CategoryScale,
@@ -59,7 +57,7 @@ export const data = {
   datasets: [
     {
       label: "Dataset 1",
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      data: labels.map(() => faker.faker.datatype.number({ min: 0, max: 1000 })),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },

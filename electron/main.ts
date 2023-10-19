@@ -21,7 +21,13 @@ ipcMain.on("logout", async () => {
 
 // Invoke
 ipcMain.handle("login", async (_event, args) => {
-  const q = `SELECT * FROM Users WHERE Username = '${args.username}'`;
+  const q = `SELECT
+              u.*,
+              r.RoleName AS Role 
+              FROM Users u
+              JOIN Roles r ON u.RoleId  = r.Id
+              WHERE u.Username = '${args.username}'`;
+
   const data = await getQuery(q);
   if (comparePassword(args?.password, data?.Password)) {
     //Save to localstorage
@@ -68,7 +74,7 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
       sandbox: false,
     },
-    width: 900,
+    width: 1440,
     height: 900,
   });
 
