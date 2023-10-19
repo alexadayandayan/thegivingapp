@@ -5,10 +5,10 @@ export interface IUser {
   Name: string;
   CreateDate: string;
   IsDeleted: number;
-  Roles: IRoles;
+  Role: IRole;
 }
 
-export interface IRoles {
+export interface IRole {
   Id: number;
   RoleName: string;
   Description: string;

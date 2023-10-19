@@ -74,7 +74,7 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
       sandbox: false,
     },
-    width: 900,
+    width: 1440,
     height: 900,
   });
 
