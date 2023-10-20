@@ -1,16 +1,16 @@
 import { Routes, Route, HashRouter } from "react-router-dom";
+import ProtectedRoute from "../utils/ProtectedRoute";
 import Login from "../Pages/Login";
 import Dashboard from "../Pages/Dashboard";
 import Members from "../Pages/Members";
 import MemberView from "../Pages/MemberView";
-import MemberAdd from "../Pages/MemberAdd";
 import MemberEdit from "../Pages/MemberEdit";
 import Giving from "../Pages/Giving";
 import GivingAdd from "../Pages/GivingAdd";
 import GivingEdit from "../Pages/GivingEdit";
 import Reports from "../Pages/Reports";
 import Settings from "../Pages/Settings";
-import ProtectedRoute from "../utils/ProtectedRoute";
+import MemberCreate from "@/Pages/MembersCreate";
 import "../App.scss";
 import "semantic-ui-css/semantic.min.css";
 
@@ -48,7 +48,7 @@ function App() {
             path="/member-add"
             element={
               <ProtectedRoute>
-                <MemberAdd />
+                <MemberCreate />
               </ProtectedRoute>
             }
           />
