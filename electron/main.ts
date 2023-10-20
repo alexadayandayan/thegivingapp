@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { getAllQuery, getQuery, postQuery } from "./query";
+import { deleteQuery, getAllQuery, getQuery, postQuery } from "./query";
 import { getCurrentUser, isLoggedIn, login, logout } from "./store";
 import path from "node:path";
 import bcrypt from "bcryptjs";
@@ -46,6 +46,12 @@ ipcMain.handle("createMember", async (_event, args) => {
   const q = `INSERT INTO Members (Firstname, Lastname, Email, Address, Phone, DateOfBirth, IsActive, IsDeleted, Gender, Image) VALUES
   ('${args.firstname}', '${args.lastname}', '${args.email}', '${args.address}', '${args.phone}', '${args.dateOfBirth}', '${args.isActive}', '${args.isDeleted}', '${args.gender}', '${args.image}' )`;
   return await postQuery(q);
+});
+
+ipcMain.handle("deleteMember", async (_event, args) => {
+  const q = `DELETE FROM employees WHERE employee_id = '${args.id}';`;
+  const data = await deleteQuery(q);
+  return data;
 });
 
 ipcMain.handle("users", async (_event: any) => {
