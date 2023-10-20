@@ -22,7 +22,7 @@ async function getAllQuery(query: string): Promise<any> {
   });
 }
 
-async function postQuery(query: string): Promise<string> {
+async function otherQuery(query: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     sqlite3.database.run(query, (err: Error, _val: any) => {
       if (err) {
@@ -33,15 +33,4 @@ async function postQuery(query: string): Promise<string> {
   });
 }
 
-async function deleteQuery(query: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    sqlite3.database.run(query, (err: Error, _val: any) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve("Success");
-    });
-  });
-}
-
-export { getQuery, getAllQuery, postQuery, deleteQuery };
+export { getQuery, getAllQuery, otherQuery };
