@@ -14,6 +14,7 @@ export default function Login() {
       navigate("/dashboard");
     }
   };
+
   const handleSubmit = async (event: any) => {
     const form = event.currentTarget;
     const username = form?.username?.value;
@@ -41,6 +42,7 @@ export default function Login() {
           </Grid.Column>
 
           <Grid.Column verticalAlign="middle">
+            <p className="text-center text-red">{isInvalid ? "There's an error in your login details. Please try again." : ""}</p>
             <Form  onSubmit={handleSubmit}>
               <Form.Input
                 icon="user"
@@ -59,7 +61,6 @@ export default function Login() {
                 name="password"
               />
               <Button type="submit">Login</Button>
-        <p>{isInvalid ? "Error" : ""}</p>
             </Form>
           </Grid.Column>
         </Grid>
