@@ -3,6 +3,7 @@ import { Grid, Icon, Header, Image, Table, Button } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import { IMember } from "../Data/member";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Members() {
   let navigate = useNavigate();
@@ -61,7 +62,7 @@ export default function Members() {
               {allMembers.length ? allMembers.map((member) => (
                 <Table.Row  key={"uniqueId" + member.Firstname} >
                   <Table.Cell selectable>
-                    <a href="/member-view">                      
+                    <Link to="/member-view">                      
                       <Header as="h4" image>
                         {member.Gender === "female" ? (
                           <Image
@@ -78,13 +79,13 @@ export default function Members() {
                         )}
                         <Header.Content>{member.Firstname}</Header.Content>
                       </Header>
-                    </a>
+                    </Link>
                   </Table.Cell>
                   <Table.Cell selectable>
-                    <a href="/member-edit">Edit</a>
+                    <Link to="/member-edit">Edit</Link>
                   </Table.Cell>
                   <Table.Cell selectable>
-                    <a href="/member-delete">Delete</a>
+                    <Link to="/members">Delete</Link>
                   </Table.Cell>
                 </Table.Row>
               )) : null}

@@ -5,7 +5,7 @@ import Dashboard from "../Pages/Dashboard";
 import Members from "../Pages/Members";
 import MemberView from "../Pages/MemberView";
 import MemberEdit from "../Pages/MemberEdit";
-import MemberCreate from "../Pages/MembersCreate";
+import MemberAdd from "../Pages/MemberAdd";
 import Giving from "../Pages/Giving";
 import GivingAdd from "../Pages/GivingAdd";
 import GivingEdit from "../Pages/GivingEdit";
@@ -48,7 +48,7 @@ function App() {
             path="/member-add"
             element={
               <ProtectedRoute>
-                <MemberCreate />
+                <MemberAdd />
               </ProtectedRoute>
             }
           />
