@@ -92,8 +92,12 @@ class MemberAdd extends Component<{}, IMemberFormState> {
     // }
   };
 
-  render() {
+  navigateToMembersPage = () => {
     const navigate = useNavigate();
+    navigate("/members");
+  };
+
+  render() {
     const genderOptions = [
       { key: "M", text: "Male", value: "male" },
       { key: "F", text: "Female", value: "female" },
@@ -103,10 +107,6 @@ class MemberAdd extends Component<{}, IMemberFormState> {
       { key: "active", text: "Active", value: "1" },
       { key: "inactive", text: "Inactive", value: "0" },
     ];
-
-    const navigateToMembersPage = () => {
-      navigate("/members");
-    };
 
     return (
       <div>
@@ -123,7 +123,7 @@ class MemberAdd extends Component<{}, IMemberFormState> {
                 </Grid.Column>
                 <Grid.Column>
                   <Button.Group floated="right">
-                    <Button onClick={navigateToMembersPage}>Cancel</Button>
+                    <Button onClick={this.navigateToMembersPage}>Cancel</Button>
                     <Button.Or />
                     <Button positive onClick={this.handleSubmit}>
                       Save
