@@ -1,27 +1,33 @@
-import { Button, Form, Grid, Segment, Divider } from 'semantic-ui-react';
-import { useNavigate } from 'react-router';
-import tgaLogo from '../assets/TGA.png';
-import { useState } from 'react';
-import bcrypt from 'bcryptjs';
-//import { IUser } from '../Data/user';
+import tgaLogo from "../assets/TGA.png";
+import { Button, Form, Grid, Segment, Divider } from "semantic-ui-react";
+import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 
 export default function Login() {
   let navigate = useNavigate();
+  let isLoggedIn = false;
   let [isInvalid, setIsInvalid] = useState(false);
 
+  const verify = () => {
+    isLoggedIn = window.api.isLoggedIn();
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  };
   const handleSubmit = async (event: any) => {
     const form = event.currentTarget;
     const username = form?.username?.value;
     const password = form?.password?.value;
-    const prof = await window.api.login({ username: username });
+    const login = await window.api.login({ username, password });
 
-    // Check if login matched
-    if (bcrypt.compareSync(password, prof?.Password)) {
+    if (login) {
       navigate("/dashboard");
     } else {
         setIsInvalid(true);
     }
   };
+
+  useEffect(() => verify());
 
   return (
     <div className="login-block">

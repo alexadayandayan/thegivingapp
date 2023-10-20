@@ -6,7 +6,9 @@ import tgaLogo from '../assets/TGA.png';
 export default function DashboardSidebar() {
     let navigate = useNavigate();
     const onLogout = () => {
-        navigate('/')        
+        window.api.logout();
+        // Navigate to login page
+        navigate('/')     
     }
     const onDashboard = () => {
         navigate('/dashboard')        
