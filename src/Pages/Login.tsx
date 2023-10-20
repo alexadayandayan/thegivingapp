@@ -1,29 +1,25 @@
 import { Button, Form, Grid, Segment, Divider } from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
 import tgaLogo from '../assets/TGA.png';
-//import { useState } from 'react';
+import { useState } from 'react';
 import bcrypt from 'bcryptjs';
 //import { IUser } from '../Data/user';
 
 export default function Login() {
   let navigate = useNavigate();
-  //   const usernameInputRef: any = useRef();
-  //   const passwordInputRef: any = useRef();
-//   let [isInvalid, setIsInvalid] = useState(false);
-//   let [getProfile, setProfile] = useState<IUser | any>(null);
+  let [isInvalid, setIsInvalid] = useState(false);
 
   const handleSubmit = async (event: any) => {
     const form = event.currentTarget;
     const username = form?.username?.value;
     const password = form?.password?.value;
     const prof = await window.api.login({ username: username });
-    //setProfile(prof);
 
     // Check if login matched
-    //setIsInvalid(bcrypt?.compareSync(password, prof?.Password));
-
     if (bcrypt.compareSync(password, prof?.Password)) {
       navigate("/dashboard");
+    } else {
+        setIsInvalid(true);
     }
   };
 
@@ -39,7 +35,7 @@ export default function Login() {
           </Grid.Column>
 
           <Grid.Column verticalAlign="middle">
-            <Form noValidate onSubmit={handleSubmit}>
+            <Form  onSubmit={handleSubmit}>
               <Form.Input
                 icon="user"
                 iconPosition="left"
@@ -57,6 +53,7 @@ export default function Login() {
                 name="password"
               />
               <Button type="submit">Login</Button>
+        <p>{isInvalid ? "Error" : ""}</p>
             </Form>
           </Grid.Column>
         </Grid>
