@@ -1,11 +1,12 @@
 import tgaLogo from "../assets/TGA.png";
 import { Button, Form, Grid, Segment, Divider } from "semantic-ui-react";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Login() {
   let navigate = useNavigate();
   let isLoggedIn = false;
+  let [isInvalid, setIsInvalid] = useState(false);
 
   const verify = () => {
     isLoggedIn = window.api.isLoggedIn();
@@ -22,6 +23,8 @@ export default function Login() {
 
     if (login) {
       navigate("/dashboard");
+    } else {
+        setIsInvalid(true);
     }
   };
 
@@ -39,7 +42,8 @@ export default function Login() {
           </Grid.Column>
 
           <Grid.Column verticalAlign="middle">
-            <Form noValidate onSubmit={handleSubmit}>
+            <p className="text-center text-red">{isInvalid ? "There's an error in your login details. Please try again." : ""}</p>
+            <Form  onSubmit={handleSubmit}>
               <Form.Input
                 icon="user"
                 iconPosition="left"
@@ -58,18 +62,6 @@ export default function Login() {
               />
               <Button type="submit">Login</Button>
             </Form>
-            {/*<br />
-                        <br />
-                        <span>
-                            {isInvalid ? (
-                                <span>Hello {getProfile?.Name}
-                                    <br />
-                                    Login Details Matched {isInvalid}
-                                </span>
-                            ) : (
-                                <span>Invalid login details</span>
-                            )}
-                        </span>*/}
           </Grid.Column>
         </Grid>
 

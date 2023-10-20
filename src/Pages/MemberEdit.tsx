@@ -16,7 +16,7 @@ export default function MemberEdit() {
     ]
     const statusOptions = [
       { key: 'active', text: 'Active', value: 'active' },
-      { key: 'inactive', text: 'Inactive', value: 'I=inactive' }
+      { key: 'inactive', text: 'Inactive', value: 'inactive' }
     ]
     return (
         <div>

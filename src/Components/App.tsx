@@ -5,12 +5,12 @@ import Dashboard from "../Pages/Dashboard";
 import Members from "../Pages/Members";
 import MemberView from "../Pages/MemberView";
 import MemberEdit from "../Pages/MemberEdit";
+import MemberCreate from "../Pages/MembersCreate";
 import Giving from "../Pages/Giving";
 import GivingAdd from "../Pages/GivingAdd";
 import GivingEdit from "../Pages/GivingEdit";
 import Reports from "../Pages/Reports";
 import Settings from "../Pages/Settings";
-import MemberCreate from "../Pages/MemberCreate";
 import "../App.scss";
 import "semantic-ui-css/semantic.min.css";
 

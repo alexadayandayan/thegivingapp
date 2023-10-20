@@ -1,16 +1,16 @@
 import DashboardSidebar from "../components/DashboardSidebar";
 import { Grid, Icon, Header, Image, Table, Button } from "semantic-ui-react";
 import { useNavigate } from "react-router";
-import { IMember } from "../data/member";
-import { useEffect } from "react";
+import { IMember } from "../Data/member";
+import { useEffect, useState } from "react";
 
 export default function Members() {
   let navigate = useNavigate();
-  let allMembers = [];
+  const [allMembers, setAllMembers] = useState<any[]>([]);
 
   const getAllMembers = async () => {
-    allMembers = await window.api.getMembers() as IMember | any;
-    console.log(allMembers);
+    const members = await window.api.getMembers() as IMember | any;
+    setAllMembers(members);
   };
 
   const onMemberAdd = () => {
@@ -58,86 +58,36 @@ export default function Members() {
             </Table.Header>
 
             <Table.Body>
-              <Table.Row>
-                <Table.Cell selectable>
-                  <a href="/member-view">
-                    <Header as="h4" image>
-                      <Image
-                        src="https://react.semantic-ui.com/images/avatar/small/lena.png"
-                        rounded
-                        size="mini"
-                      />
-                      <Header.Content>Lena</Header.Content>
-                    </Header>
-                  </a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-edit">Edit</a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-delete">Delete</a>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell selectable>
-                  <a href="/member-view">
-                    <Header as="h4" image>
-                      <Image
-                        src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
-                        rounded
-                        size="mini"
-                      />
-                      <Header.Content>Matthew</Header.Content>
-                    </Header>
-                  </a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-edit">Edit</a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-delete">Delete</a>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell selectable>
-                  <a href="/member-view">
-                    <Header as="h4" image>
-                      <Image
-                        src="https://react.semantic-ui.com/images/avatar/small/lindsay.png"
-                        rounded
-                        size="mini"
-                      />
-                      <Header.Content>Lindsay</Header.Content>
-                    </Header>
-                  </a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-edit">Edit</a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-delete">Delete</a>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell selectable>
-                  <a href="/member-view">
-                    <Header as="h4" image>
-                      <Image
-                        src="https://react.semantic-ui.com/images/avatar/small/mark.png"
-                        rounded
-                        size="mini"
-                      />
-                      <Header.Content>Mark</Header.Content>
-                    </Header>
-                  </a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-edit">Edit</a>
-                </Table.Cell>
-                <Table.Cell selectable>
-                  <a href="/member-delete">Delete</a>
-                </Table.Cell>
-              </Table.Row>
+              {allMembers.length ? allMembers.map((member) => (
+                <Table.Row  key={"uniqueId" + member.Firstname} >
+                  <Table.Cell selectable>
+                    <a href="/member-view">                      
+                      <Header as="h4" image>
+                        {member.Gender === "female" ? (
+                          <Image
+                            src="https://react.semantic-ui.com/images/avatar/small/lena.png"
+                            rounded
+                            size="mini"
+                          />
+                        ) : (
+                          <Image
+                            src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
+                            rounded
+                            size="mini"
+                          />
+                        )}
+                        <Header.Content>{member.Firstname}</Header.Content>
+                      </Header>
+                    </a>
+                  </Table.Cell>
+                  <Table.Cell selectable>
+                    <a href="/member-edit">Edit</a>
+                  </Table.Cell>
+                  <Table.Cell selectable>
+                    <a href="/member-delete">Delete</a>
+                  </Table.Cell>
+                </Table.Row>
+              )) : null}
             </Table.Body>
           </Table>
         </Grid.Column>
