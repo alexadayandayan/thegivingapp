@@ -6,6 +6,7 @@ export interface IMember {
     Phone: string;
     DateOfBirth: string;
     Image: string;
+    Document: string;
     IsActive: number;
     IsDeleted: number;
 }

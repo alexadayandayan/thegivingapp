@@ -1,8 +1,8 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { getAllQuery, getQuery } from "./query";
+import { getAllQuery, getQuery, postQuery } from "./query";
+import { getCurrentUser, isLoggedIn, login, logout } from "./store";
 import path from "node:path";
 import bcrypt from "bcryptjs";
-import { getCurrentUser, isLoggedIn, login, logout } from "./store";
 
 ///////////////////////////////////// IPC HANDLERS //////////////////////////////
 ipcMain.on("isLoggedIn", async (event) => {
@@ -39,6 +39,13 @@ ipcMain.handle("getMembers", async (_event) => {
   const q = `SELECT * FROM Members`;
   const data = await getAllQuery(q);
   return data;
+});
+
+ipcMain.handle("createMember", async (_event, args) => {
+  console.log(args);
+  const q = `INSERT INTO Members (Firstname, Lastname, Email, Address, Phone, DateOfBirth, IsActive, IsDeleted, Gender, Image) VALUES
+  ('${args.firstname}', '${args.lastname}', '${args.email}', '${args.address}', '${args.phone}', '${args.dateOfBirth}', '${args.isActive}', '${args.isDeleted}', '${args.gender}', '${args.image}' )`;
+  return await postQuery(q);
 });
 
 ipcMain.handle("users", async (_event: any) => {

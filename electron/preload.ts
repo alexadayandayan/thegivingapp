@@ -1,3 +1,4 @@
+import { IMember } from "@/data/member";
 import { IUser } from "@/data/user";
 import { contextBridge, ipcRenderer } from "electron";
 
@@ -13,6 +14,7 @@ const WINDOW_API = {
   // invoke
   login: (args: IUser) => ipcRenderer.invoke("login", args),
   getMembers: () => ipcRenderer.invoke("getMembers"),
+  createMember: (args: IMember) => ipcRenderer.invoke("createMember", args),
 };
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);
