@@ -46,7 +46,6 @@ const MemberTest: React.FC = () => {
   const getMember = async () => {
     const member = await window.api.getMemberById(id?.slice(1, -1));
     const x = lowerCaseKeys(member);
-    console.log(x);
     setFormData({
       ...x,
       isActive: x.isActive?.toString(),
@@ -111,10 +110,10 @@ const MemberTest: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     const updateMember = await window.api.updateMember(formData);
-    console.log(updateMember);
-    navigate("/members");
+    if(updateMember) {
+      navigate("/members");
+    }
   };
   const genderOptions = [
     { key: "M", text: "Male", value: "male" },

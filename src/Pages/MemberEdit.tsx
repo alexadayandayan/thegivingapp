@@ -46,7 +46,6 @@ const MemberTest: React.FC = () => {
   const getMember = async () => {
     const member = await window.api.getMemberById(id?.slice(1, -1));
     const x = lowerCaseKeys(member);
-    console.log(x);
     setFormData({
       ...x,
       isActive: x.isActive?.toString(),
@@ -111,7 +110,6 @@ const MemberTest: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     const updateMember = await window.api.updateMember(formData);
     if (updateMember !== "Success") {
       return;
