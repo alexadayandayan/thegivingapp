@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Grid,
   Icon,
@@ -8,37 +7,30 @@ import {
 } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import DashboardSidebar from "../Components/DashboardSidebar";
+import { useEffect, useState } from "react";
+import { IMember } from "../Data/member";
 
-const memberOptions = [
-  {
-    key: "Jenny Hess",
-    text: "Jenny Hess",
-    value: "Jenny Hess",
-    image: {
-      avatar: true,
-      src: "https://react.semantic-ui.com/images/avatar/small/lena.png",
-    },
-  },
-  {
-    key: "Elliot Fu",
-    text: "Elliot Fu",
-    value: "Elliot Fu",
-    image: {
-      avatar: true,
-      src: "https://react.semantic-ui.com/images/avatar/small/matthew.png",
-    },
-  },
-];
 
 export default function GivingAdd() {
-  const [selectedMember, setSelectedMember]: any = useState(null);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const onGivingSave = () => {
     navigate("/giving");
   };
   const onGivingCancel = () => {
     navigate("/giving");
   };
+  const [allMembers, setAllMembers] = useState<any[]>([]);
+  const [selectedMember, setSelectedMember]: any = useState(null);
+
+  const getAllMembers = async () => {
+    const members = await window.api.getMembers() as IMember | any;
+    setAllMembers(members);
+  };
+
+  useEffect(() => {
+    getAllMembers();
+  }, []);
+
   return (
     <>
       <Grid columns="equal">
@@ -81,12 +73,12 @@ export default function GivingAdd() {
                       placeholder="Select Member"
                       fluid
                       selection
-                      options={memberOptions}
+                      options={allMembers}
                       className="dropdown"
-                      onChange={() => setSelectedMember(memberOptions)}
+                      onChange={() => setSelectedMember(allMembers)}
                     />
                   </Table.Cell>
-                  <Table.Cell>{selectedMember.text}</Table.Cell>
+                  <Table.Cell></Table.Cell>
                   <Table.Cell></Table.Cell>
                   <Table.Cell></Table.Cell>
                   <Table.Cell></Table.Cell>
