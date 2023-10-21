@@ -77,14 +77,15 @@ ipcMain.handle("deleteMember", async (_event, id) => {
 ////////////////////////////// GIVING //////////////////////////////
 ipcMain.handle("getOfferings", async (_event) => {
   const q = `SELECT
-	C.Id AS Giving,
+    C.Id AS Giving,
     M.Firstname,
     M.Lastname,
+    M.Gender,
     C.Tithe,
     C.BuildingFund,
     C.BestGift,
-    C.OfferingGifts,
-    C.SS,
+    C.GiftForPastor,
+    C.GiftForBrother,
     C.Youth,
     C.FlowerOrPlants,
     C.FEBC700,

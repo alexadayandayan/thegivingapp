@@ -65,7 +65,7 @@ function App() {
             path="/giving"
             element={
               <ProtectedRoute>
-                <GivingTest />
+                <Giving />
               </ProtectedRoute>
             }
           />
