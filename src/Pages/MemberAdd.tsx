@@ -1,4 +1,4 @@
-import DashboardSidebar from "@/Components/DashboardSidebar";
+import DashboardSidebar from "../Components/DashboardSidebar";
 import React, { useState, ChangeEvent, FormEvent, useRef } from "react";
 import { useNavigate } from "react-router";
 import { Form, Button, Icon, Grid, Message } from "semantic-ui-react";
