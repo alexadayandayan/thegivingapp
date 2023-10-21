@@ -1,5 +1,5 @@
-import DashboardSidebar from "@/Components/DashboardSidebar";
-import { lowerCaseKeys } from "@/utils/LowerCaseKeys";
+import DashboardSidebar from "../Components/DashboardSidebar";
+import { lowerCaseKeys } from "../utils/LowerCaseKeys";
 import React, {
   useState,
   ChangeEvent,
