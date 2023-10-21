@@ -18,5 +18,5 @@ export interface IGiving {
   Tithe: number;
   Total: number;
   Youth: number;
-  Gender: string;
+  Gender: string | null;
 }

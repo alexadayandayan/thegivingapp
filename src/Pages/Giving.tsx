@@ -107,7 +107,9 @@ const Giving: React.FC = () => {
                         <Table.Cell>{offering.Total}</Table.Cell>
                         <Table.Cell>{offering.EntryDate}</Table.Cell>
                         <Table.Cell selectable positive>
-                          <Link to="/giving-edit">Edit</Link>
+                          <Link to={`/giving-edit/'${offering.Giving}'`}>
+                            Edit
+                          </Link>
                         </Table.Cell>
                         <Table.Cell selectable negative>
                           <Link to="#">Delete</Link>
