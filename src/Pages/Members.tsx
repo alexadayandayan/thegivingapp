@@ -1,4 +1,4 @@
-import DashboardSidebar from "../components/DashboardSidebar";
+import DashboardSidebar from "../Components/DashboardSidebar";
 import { Grid, Icon, Header, Image, Table, Button } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import { IMember } from "../Data/member";

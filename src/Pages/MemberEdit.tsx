@@ -1,6 +1,6 @@
 import { Grid, Button, Form, Message } from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
-import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardSidebar from '../Components/DashboardSidebar';
 
 export default function MemberEdit() {
     let navigate = useNavigate();

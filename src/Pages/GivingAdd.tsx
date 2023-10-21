@@ -7,7 +7,7 @@ import {
   Dropdown,
 } from "semantic-ui-react";
 import { useNavigate } from "react-router";
-import DashboardSidebar from "../components/DashboardSidebar";
+import DashboardSidebar from "../Components/DashboardSidebar";
 
 const memberOptions = [
   {

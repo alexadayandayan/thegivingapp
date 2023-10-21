@@ -1,5 +1,5 @@
 import { Grid } from "semantic-ui-react";
-import DashboardSidebar from "../components/DashboardSidebar";
+import DashboardSidebar from "../Components/DashboardSidebar";
 
 export default function Settings() {
   return (

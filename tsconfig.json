@@ -27,7 +27,7 @@
         "src/*"
       ],
       "Components/*": [
-        "src/components/*"
+        "src/Components/*"
       ]
     },
     "typeRoots": [

@@ -1,6 +1,6 @@
 import { Grid, Icon, Header, Image, Table, Button} from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
-import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardSidebar from '../Components/DashboardSidebar';
  
 export default function Giving() {
     let navigate = useNavigate();
