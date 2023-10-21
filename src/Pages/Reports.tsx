@@ -1,5 +1,5 @@
 import { Grid, Icon, Tab, Form, Message } from 'semantic-ui-react';
-import DashboardSidebar from '../components/DashboardSidebar';
+import DashboardSidebar from '../Components/DashboardSidebar';
 
 const yearOptions = [
   { key: '2020', text: '2020', value: '2020' },

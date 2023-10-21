@@ -1,7 +1,7 @@
 import { Grid, Form, Button, Message, Icon } from "semantic-ui-react";
 import React, { Component, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router";
-import DashboardSidebar from "../components/DashboardSidebar";
+import DashboardSidebar from "../Components/DashboardSidebar";
 
 interface IMemberFormState {
   firstname: string;

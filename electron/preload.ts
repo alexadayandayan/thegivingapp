@@ -1,5 +1,5 @@
-import { IMember } from "@/data/member";
-import { IUser } from "@/data/user";
+import { IMember } from "@/Data/member";
+import { IUser } from "@/Data/user";
 import { contextBridge, ipcRenderer } from "electron";
 
 ///////////////////////////////////////////////////////////////////

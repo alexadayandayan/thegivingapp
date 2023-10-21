@@ -1,4 +1,4 @@
-import { IUser } from "@/data/user";
+import { IUser } from "@/Data/user";
 import Store from "electron-store";
 
 const store = new Store();

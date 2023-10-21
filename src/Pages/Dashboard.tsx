@@ -1,5 +1,5 @@
 import { Grid, Table } from "semantic-ui-react";
-import DashboardSidebar from "../components/DashboardSidebar";
+import DashboardSidebar from "../Components/DashboardSidebar";
 import {
   Chart as ChartJS,
   CategoryScale,
