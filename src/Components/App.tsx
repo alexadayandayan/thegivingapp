@@ -13,6 +13,7 @@ import GivingEdit from "../Pages/GivingEdit";
 import Reports from "../Pages/Reports";
 import Settings from "../Pages/Settings";
 import ProtectedRoute from "../utils/ProtectedRoute";
+import MemberTest from "@/Pages/MemberTest";
 
 function App() {
   return (
@@ -53,10 +54,10 @@ function App() {
             }
           />
           <Route
-            path="/member-edit"
+            path="/member-edit/:id"
             element={
               <ProtectedRoute>
-                <MemberEdit />
+                <MemberTest />
               </ProtectedRoute>
             }
           />

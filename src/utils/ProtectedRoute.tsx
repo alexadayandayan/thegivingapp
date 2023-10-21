@@ -2,7 +2,6 @@ import { Navigate, useLocation } from "react-router";
 
 const ProtectedRoute: any = ({ children = {} }) => {
   const currentUser = window.api.getCurrentUser();
-  console.log(currentUser);
   let location = useLocation();
 
   if (!currentUser && currentUser.Role === "Admin") {

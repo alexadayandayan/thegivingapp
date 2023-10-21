@@ -41,15 +41,19 @@ ipcMain.handle("getMembers", async (_event) => {
   return data;
 });
 
+ipcMain.handle("getMemberById", async (_event, id) => {
+  const q = `SELECT * FROM Members WHERE Id='${id}'`;
+  const data = await getQuery(q);
+  return data;
+});
+
 ipcMain.handle("createMember", async (_event, args) => {
-  console.log(args);
   const q = `INSERT INTO Members (Firstname, Lastname, Email, Address, Phone, DateOfBirth, IsActive, IsDeleted, Gender, Image) VALUES
   ('${args.firstname}', '${args.lastname}', '${args.email}', '${args.address}', '${args.phone}', '${args.dateOfBirth}', '${args.isActive}', '${args.isDeleted}', '${args.gender}', '${args.image}' )`;
   return await otherQuery(q);
 });
 
 ipcMain.handle("updateMember", async (_event, args) => {
-  console.log(args);
   const q = `UPDATE Members 
     SET Firstname = '${args.firstname}',
     Lastname = '${args.lastname}',
@@ -58,7 +62,7 @@ ipcMain.handle("updateMember", async (_event, args) => {
     Phone = '${args.phone}',
     DateOfBirth = '${args.dateOfBirth}',
     IsActive = '${args.isActive}',
-    Gender = '${args.gender}',
+    Gender = '${args.gender}'
     WHERE Id = '${args.id}'`;
   return await otherQuery(q);
 });

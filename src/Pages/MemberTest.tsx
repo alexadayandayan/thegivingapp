@@ -1,9 +1,17 @@
 import DashboardSidebar from "@/Components/DashboardSidebar";
-import React, { useState, ChangeEvent, FormEvent, useRef } from "react";
-import { useNavigate } from "react-router";
-import { Form, Button, Icon, Grid, Message } from "semantic-ui-react";
+import { lowerCaseKeys } from "@/utils/LowerCaseKeys";
+import React, {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useRef,
+  useEffect,
+} from "react";
+import { useNavigate, useParams } from "react-router";
+import { Form, Button, Grid, Message, Icon } from "semantic-ui-react";
 
 interface IMemberFormState {
+  id: number | null;
   firstname: string;
   lastname: string;
   gender: string;
@@ -17,8 +25,11 @@ interface IMemberFormState {
   isDeleted: number | null;
 }
 
-const MemberAdd: React.FC = () => {
+const MemberTest: React.FC = () => {
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: number | any }>();
   const [formData, setFormData] = useState<IMemberFormState>({
+    id: null,
     firstname: "",
     lastname: "",
     gender: "",
@@ -32,6 +43,15 @@ const MemberAdd: React.FC = () => {
     isDeleted: null,
   });
 
+  const getMember = async () => {
+    const member = await window.api.getMemberById(id?.slice(1, -1));
+    const x = lowerCaseKeys(member);
+    console.log(x);
+    setFormData({
+      ...x,
+      isActive: x.isActive?.toString(),
+    });
+  };
   const imageInput = useRef<HTMLInputElement>(null);
   const documentInput = useRef<HTMLInputElement>(null);
 
@@ -91,19 +111,14 @@ const MemberAdd: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const createMember = await window.api.createMember(formData);
-    console.log(createMember);
+    console.log("Form submitted:", formData);
+    const updateMember = await window.api.updateMember(formData);
+    console.log(updateMember);
     // if (createMember) {
     //   const navigate = useNavigate();
     //   navigate("/members");
     // }
   };
-
-  const navigateToMembersPage = () => {
-    const navigate = useNavigate();
-    navigate("/members");
-  };
-
   const genderOptions = [
     { key: "M", text: "Male", value: "male" },
     { key: "F", text: "Female", value: "female" },
@@ -113,6 +128,10 @@ const MemberAdd: React.FC = () => {
     { key: "active", text: "Active", value: "1" },
     { key: "inactive", text: "Inactive", value: "0" },
   ];
+
+  useEffect(() => {
+    getMember();
+  }, []);
 
   return (
     <div>
@@ -125,14 +144,14 @@ const MemberAdd: React.FC = () => {
           <div className="header-block">
             <Grid columns="equal">
               <Grid.Column>
-                <h3>Add Member Profile</h3>
+                <h3>Update Member Profile</h3>
               </Grid.Column>
               <Grid.Column>
                 <Button.Group floated="right">
-                  <Button onClick={navigateToMembersPage}>Cancel</Button>
+                  <Button onClick={() => navigate("/members")}>Cancel</Button>
                   <Button.Or />
                   <Button positive onClick={handleSubmit}>
-                    Save
+                    Update
                   </Button>
                 </Button.Group>
               </Grid.Column>
@@ -141,9 +160,9 @@ const MemberAdd: React.FC = () => {
           <Message
             success
             header="Form Completed"
-            content="Member is successfully added to the system."
+            content="Member is successfully updated."
           />
-          <Form noValidate onSubmit={handleSubmit}>
+          <Form>
             <Form.Group widths="equal">
               <Form.Input
                 fluid
@@ -256,4 +275,4 @@ const MemberAdd: React.FC = () => {
   );
 };
 
-export default MemberAdd;
+export default MemberTest;
