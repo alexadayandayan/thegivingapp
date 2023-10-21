@@ -1,14 +1,13 @@
-import DashboardSidebar from "../Components/DashboardSidebar";
+import DashboardSidebar from "@/Components/DashboardSidebar";
 import React, { useState, useEffect } from "react";
-import { IGiving } from "../Data/giving";
 import { Link } from "react-router-dom";
 import { Button, Grid, Icon, Table, Header, Image } from "semantic-ui-react";
 
-const Giving: React.FC = () => {
-  const [offerings, setOfferings] = useState<IGiving[]>([]);
+const GivingTest: React.FC = () => {
+  const [offerings, setOfferings] = useState<any[]>([]);
 
   const getOfferings = async () => {
-    const giving = (await window.api.getOfferings()) as IGiving | any;
+    const giving = await window.api.getOfferings();
     console.log(giving);
     setOfferings(giving);
   };
@@ -51,29 +50,27 @@ const Giving: React.FC = () => {
                   <Table.HeaderCell>Tithe</Table.HeaderCell>
                   <Table.HeaderCell>Building Fund</Table.HeaderCell>
                   <Table.HeaderCell>Best Gift</Table.HeaderCell>
+                  <Table.HeaderCell>Love Gifts</Table.HeaderCell>
+                  <Table.HeaderCell>SS</Table.HeaderCell>
+                  <Table.HeaderCell>Youth</Table.HeaderCell>
+                  <Table.HeaderCell>Flower Or Plants</Table.HeaderCell>
                   <Table.HeaderCell>FEBC 700</Table.HeaderCell>
-                  <Table.HeaderCell>Gift for Pastor</Table.HeaderCell>
-                  <Table.HeaderCell>Gift for Bro/Sis</Table.HeaderCell>
-                  <Table.HeaderCell>Children's Ministry</Table.HeaderCell>
-                  <Table.HeaderCell>Flower/Plants</Table.HeaderCell>
-                  <Table.HeaderCell>L&S Youth</Table.HeaderCell>
                   <Table.HeaderCell>Dance</Table.HeaderCell>
-                  <Table.HeaderCell>Meralco/Maynilad</Table.HeaderCell>
                   <Table.HeaderCell>Music</Table.HeaderCell>
+                  <Table.HeaderCell>Meralco</Table.HeaderCell>
                   <Table.HeaderCell>Others</Table.HeaderCell>
                   <Table.HeaderCell>Total</Table.HeaderCell>
-                  <Table.HeaderCell>Entry Date</Table.HeaderCell>
                   <Table.HeaderCell colSpan="2">Actions</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
 
               <Table.Body>
                 {offerings.length
-                  ? offerings.map((offering) => (
-                      <Table.Row key={"uniqueId" + offering.Giving}>
+                  ? offerings.map((member) => (
+                      <Table.Row key={"uniqueId" + member.Giving}>
                         <Table.Cell>
                           <Header as="h4" image>
-                            {offering.Gender === "female" ? (
+                            {member.Gender === "female" ? (
                               <Image
                                 src="https://react.semantic-ui.com/images/avatar/small/lena.png"
                                 rounded
@@ -86,26 +83,22 @@ const Giving: React.FC = () => {
                                 size="mini"
                               />
                             )}
-                            <Header.Content>
-                              {offering.Firstname}
-                            </Header.Content>
+                            <Header.Content>{member.Firstname}</Header.Content>
                           </Header>
                         </Table.Cell>
-                        <Table.Cell>{offering.Tithe}</Table.Cell>
-                        <Table.Cell>{offering.BuildingFund}</Table.Cell>
-                        <Table.Cell>{offering.BestGift}</Table.Cell>
-                        <Table.Cell>{offering.FEBC700}</Table.Cell>
-                        <Table.Cell>{offering.GiftForPastor}</Table.Cell>
-                        <Table.Cell>{offering.GiftForBrother}</Table.Cell>
-                        <Table.Cell>{offering.ChildrensMinistry}</Table.Cell>
-                        <Table.Cell>{offering.FlowerOrPlants}</Table.Cell>
-                        <Table.Cell>{offering.Youth}</Table.Cell>
-                        <Table.Cell>{offering.Dance}</Table.Cell>
-                        <Table.Cell>{offering.Meralco}</Table.Cell>
-                        <Table.Cell>{offering.Music}</Table.Cell>
-                        <Table.Cell>{offering.Others}</Table.Cell>
-                        <Table.Cell>{offering.Total}</Table.Cell>
-                        <Table.Cell>{offering.EntryDate}</Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell></Table.Cell>
                         <Table.Cell selectable positive>
                           <Link to="/giving-edit">Edit</Link>
                         </Table.Cell>
@@ -124,4 +117,4 @@ const Giving: React.FC = () => {
   );
 };
 
-export default Giving;
+export default GivingTest;

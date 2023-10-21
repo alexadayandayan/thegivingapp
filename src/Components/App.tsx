@@ -13,6 +13,7 @@ import GivingEdit from "../Pages/GivingEdit";
 import Reports from "../Pages/Reports";
 import Settings from "../Pages/Settings";
 import ProtectedRoute from "../utils/ProtectedRoute";
+import GivingTest from "@/Pages/GivingTest";
 
 function App() {
   return (
