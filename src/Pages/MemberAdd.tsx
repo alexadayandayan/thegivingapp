@@ -100,7 +100,6 @@ const MemberAdd: React.FC = () => {
   };
 
   const navigateToMembersPage = () => {
-    const navigate = useNavigate();
     navigate("/members");
   };
 
