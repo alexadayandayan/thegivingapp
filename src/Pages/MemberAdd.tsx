@@ -18,6 +18,7 @@ interface IMemberFormState {
 }
 
 const MemberAdd: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<IMemberFormState>({
     firstname: "",
     lastname: "",
@@ -92,11 +93,10 @@ const MemberAdd: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const createMember = await window.api.createMember(formData);
-    console.log(createMember);
-    // if (createMember) {
-    //   const navigate = useNavigate();
-    //   navigate("/members");
-    // }
+    if (createMember !== "Success") {
+      return;
+    }
+    navigate("/members");
   };
 
   const navigateToMembersPage = () => {

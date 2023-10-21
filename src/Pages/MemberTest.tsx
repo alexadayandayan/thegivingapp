@@ -114,10 +114,7 @@ const MemberTest: React.FC = () => {
     console.log("Form submitted:", formData);
     const updateMember = await window.api.updateMember(formData);
     console.log(updateMember);
-    // if (createMember) {
-    //   const navigate = useNavigate();
-    //   navigate("/members");
-    // }
+    navigate("/members");
   };
   const genderOptions = [
     { key: "M", text: "Male", value: "male" },

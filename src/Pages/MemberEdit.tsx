@@ -113,7 +113,9 @@ const MemberTest: React.FC = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     const updateMember = await window.api.updateMember(formData);
-    console.log(updateMember);
+    if (updateMember !== "Success") {
+      return;
+    }
     navigate("/members");
   };
   const genderOptions = [
