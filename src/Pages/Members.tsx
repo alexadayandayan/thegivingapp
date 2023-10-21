@@ -10,12 +10,19 @@ export default function Members() {
   const [allMembers, setAllMembers] = useState<any[]>([]);
 
   const getAllMembers = async () => {
-    const members = await window.api.getMembers() as IMember | any;
+    const members = (await window.api.getMembers()) as IMember | any;
     setAllMembers(members);
   };
 
   const onMemberAdd = () => {
     navigate("/member-add");
+  };
+
+  const handleDelete = async (e: React.SyntheticEvent<HTMLElement, Event>) => {
+    const deleteMember = await window.api.deleteMember(e.currentTarget.id);
+    if (deleteMember !== "Success") {
+      console.log("Failed on deleting member");
+    }
   };
 
   useEffect(() => {
@@ -59,36 +66,44 @@ export default function Members() {
             </Table.Header>
 
             <Table.Body>
-              {allMembers.length ? allMembers.map((member) => (
-                <Table.Row  key={"uniqueId" + member.Firstname} >
-                  <Table.Cell selectable>
-                    <Link to="/member-view">                      
-                      <Header as="h4" image>
-                        {member.Gender === "female" ? (
-                          <Image
-                            src="https://react.semantic-ui.com/images/avatar/small/lena.png"
-                            rounded
-                            size="mini"
-                          />
-                        ) : (
-                          <Image
-                            src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
-                            rounded
-                            size="mini"
-                          />
-                        )}
-                        <Header.Content>{member.Firstname}</Header.Content>
-                      </Header>
-                    </Link>
-                  </Table.Cell>
-                  <Table.Cell selectable>
-                    <Link to={`/member-edit/'${member.Id}'`}>Edit</Link>
-                  </Table.Cell>
-                  <Table.Cell selectable>
-                    <Link to="/members">Delete</Link>
-                  </Table.Cell>
-                </Table.Row>
-              )) : null}
+              {allMembers.length
+                ? allMembers.map((member) => (
+                    <Table.Row key={"uniqueId" + member.Firstname}>
+                      <Table.Cell selectable>
+                        <Link to="/member-view">
+                          <Header as="h4" image>
+                            {member.Gender === "female" ? (
+                              <Image
+                                src="https://react.semantic-ui.com/images/avatar/small/lena.png"
+                                rounded
+                                size="mini"
+                              />
+                            ) : (
+                              <Image
+                                src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
+                                rounded
+                                size="mini"
+                              />
+                            )}
+                            <Header.Content>{member.Firstname}</Header.Content>
+                          </Header>
+                        </Link>
+                      </Table.Cell>
+                      <Table.Cell selectable>
+                        <Link to={`/member-edit/'${member.Id}'`}>Edit</Link>
+                      </Table.Cell>
+                      <Table.Cell selectable>
+                        <Link
+                          id={member.Id}
+                          to="/members"
+                          onClick={handleDelete}
+                        >
+                          Delete
+                        </Link>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                : null}
             </Table.Body>
           </Table>
         </Grid.Column>
