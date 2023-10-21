@@ -17,7 +17,7 @@ const WINDOW_API = {
   getMemberById: (id: any) => ipcRenderer.invoke("getMemberById", id),
   createMember: (args: IMember) => ipcRenderer.invoke("createMember", args),
   updateMember: (args: IMember) => ipcRenderer.invoke("updateMember", args),
-  deleteMember: (args: IMember) => ipcRenderer.invoke("deleteMember", args),
+  deleteMember: (id: any) => ipcRenderer.invoke("deleteMember", id),
 };
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);

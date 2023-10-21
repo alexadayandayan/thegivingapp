@@ -67,8 +67,8 @@ ipcMain.handle("updateMember", async (_event, args) => {
   return await otherQuery(q);
 });
 
-ipcMain.handle("deleteMember", async (_event, args) => {
-  const q = `DELETE FROM Members WHERE Id = '${args.id}';`;
+ipcMain.handle("deleteMember", async (_event, id) => {
+  const q = `DELETE FROM Members WHERE Id = '${id}';`;
   const data = await otherQuery(q);
   return data;
 });

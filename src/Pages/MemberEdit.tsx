@@ -111,7 +111,6 @@ const MemberTest: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     const updateMember = await window.api.updateMember(formData);
     if (updateMember !== "Success") {
       return;
