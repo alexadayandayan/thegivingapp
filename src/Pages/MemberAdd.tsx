@@ -17,7 +17,8 @@ interface IMemberFormState {
   isDeleted: number | null;
 }
 
-const MemberAddConvert: React.FC = () => {
+const MemberAdd: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<IMemberFormState>({
     firstname: "",
     lastname: "",
@@ -91,13 +92,11 @@ const MemberAddConvert: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     const createMember = await window.api.createMember(formData);
-    console.log(createMember);
-    // if (createMember) {
-    //   const navigate = useNavigate();
-    //   navigate("/members");
-    // }
+    if (createMember !== "Success") {
+      return;
+    }
+    navigate("/members");
   };
 
   const navigateToMembersPage = () => {
@@ -257,4 +256,4 @@ const MemberAddConvert: React.FC = () => {
   );
 };
 
-export default MemberAddConvert;
+export default MemberAdd;

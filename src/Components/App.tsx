@@ -53,7 +53,7 @@ function App() {
             }
           />
           <Route
-            path="/member-edit"
+            path="/member-edit/:id"
             element={
               <ProtectedRoute>
                 <MemberEdit />

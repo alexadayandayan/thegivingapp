@@ -82,7 +82,7 @@ export default function Members() {
                     </Link>
                   </Table.Cell>
                   <Table.Cell selectable>
-                    <Link to="/member-edit">Edit</Link>
+                    <Link to={`/member-edit/'${member.Id}'`}>Edit</Link>
                   </Table.Cell>
                   <Table.Cell selectable>
                     <Link to="/members">Delete</Link>

@@ -14,6 +14,7 @@ const WINDOW_API = {
   // invoke
   login: (args: IUser) => ipcRenderer.invoke("login", args),
   getMembers: () => ipcRenderer.invoke("getMembers"),
+  getMemberById: (id: any) => ipcRenderer.invoke("getMemberById", id),
   createMember: (args: IMember) => ipcRenderer.invoke("createMember", args),
   updateMember: (args: IMember) => ipcRenderer.invoke("updateMember", args),
   deleteMember: (args: IMember) => ipcRenderer.invoke("deleteMember", args),
