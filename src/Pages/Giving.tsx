@@ -1,9 +1,23 @@
 import { Grid, Icon, Header, Image, Table, Button} from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
 import DashboardSidebar from '../Components/DashboardSidebar';
+import { useEffect, useState } from "react";
+import { IMember } from "../Data/member";
+import { Link } from "react-router-dom";
  
 export default function Giving() {
     let navigate = useNavigate();
+    const [allMembers, setAllMembers] = useState<any[]>([]);
+  
+    const getAllMembers = async () => {
+      const members = await window.api.getMembers() as IMember | any;
+      setAllMembers(members);
+    };
+  
+    useEffect(() => {
+      getAllMembers();
+    }, []);
+    
     const onGivingAdd = () => {
         navigate('/giving-add')        
     }
@@ -57,122 +71,47 @@ export default function Giving() {
                             </Table.Header>
 
                             <Table.Body>
-                              <Table.Row>
-                                <Table.Cell>
-                                  <Header as='h4' image>
-                                    <Image src='https://react.semantic-ui.com/images/avatar/small/lena.png' rounded size='mini' />
-                                    <Header.Content>
-                                      Lena
-                                    </Header.Content>
-                                  </Header>
-                                </Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell selectable positive>
-                                    <a href="/giving-edit">Edit</a>
-                                </Table.Cell>
-                                <Table.Cell selectable negative>
-                                    <a href="#">Delete</a>
-                                </Table.Cell>
-                              </Table.Row>
-                              <Table.Row>
-                                <Table.Cell>
-                                  <Header as='h4' image>
-                                    <Image src='https://react.semantic-ui.com/images/avatar/small/matthew.png' rounded size='mini' />
-                                    <Header.Content>
-                                      Matthew
-                                    </Header.Content>
-                                  </Header>
-                                </Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell selectable positive>
-                                    <a href="/giving-edit">Edit</a>
-                                </Table.Cell>
-                                <Table.Cell selectable negative>
-                                    <a href="#">Delete</a>
-                                </Table.Cell>
-                              </Table.Row>
-                              <Table.Row>
-                                <Table.Cell>
-                                  <Header as='h4' image>
-                                    <Image src='https://react.semantic-ui.com/images/avatar/small/lindsay.png' rounded size='mini' />
-                                    <Header.Content>
-                                      Lindsay
-                                    </Header.Content>
-                                  </Header>
-                                </Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell selectable positive>
-                                    <a href="/giving-edit">Edit</a>
-                                </Table.Cell>
-                                <Table.Cell selectable negative>
-                                    <a href="#">Delete</a>
-                                </Table.Cell>
-                              </Table.Row>
-                              <Table.Row>
-                                <Table.Cell>
-                                  <Header as='h4' image>
-                                    <Image src='https://react.semantic-ui.com/images/avatar/small/mark.png' rounded size='mini' />
-                                    <Header.Content>
-                                      Mark
-                                    </Header.Content>
-                                  </Header>
-                                </Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell selectable positive>
-                                    <a href="/giving-edit">Edit</a>
-                                </Table.Cell>
-                                <Table.Cell selectable negative>
-                                    <a href="#">Delete</a>
-                                </Table.Cell>
-                              </Table.Row>
+                              {allMembers.length ? allMembers.map((member) => (
+                                <Table.Row  key={"uniqueId" + member.Firstname} >
+                                  <Table.Cell>
+                                    <Header as='h4' image>
+                                      {member.Gender === "female" ? (
+                                        <Image
+                                          src="https://react.semantic-ui.com/images/avatar/small/lena.png"
+                                          rounded
+                                          size="mini"
+                                        />
+                                      ) : (
+                                        <Image
+                                          src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
+                                          rounded
+                                          size="mini"
+                                        />
+                                      )}
+                                      <Header.Content>{member.Firstname}</Header.Content>
+                                    </Header>
+                                  </Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell></Table.Cell>
+                                  <Table.Cell selectable positive>
+                                      <Link to="/giving-edit">Edit</Link>                                      
+                                  </Table.Cell>
+                                  <Table.Cell selectable negative>
+                                      <Link to="#">Delete</Link>
+                                  </Table.Cell>
+                                </Table.Row>
+                              )) : null}
                             </Table.Body>
                         </Table>
                     </div>
