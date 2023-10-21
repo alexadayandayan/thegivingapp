@@ -25,7 +25,7 @@ interface IMemberFormState {
   isDeleted: number | null;
 }
 
-const MemberTest: React.FC = () => {
+const MemberEdit: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: number | any }>();
   const [formData, setFormData] = useState<IMemberFormState>({
@@ -272,4 +272,4 @@ const MemberTest: React.FC = () => {
   );
 };
 
-export default MemberTest;
+export default MemberEdit;

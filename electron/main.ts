@@ -35,6 +35,7 @@ ipcMain.handle("login", async (_event, args) => {
   }
 });
 
+////////////////////////////// MEMBERS //////////////////////////////
 ipcMain.handle("getMembers", async (_event) => {
   const q = `SELECT * FROM Members`;
   const data = await getAllQuery(q);
@@ -55,21 +56,50 @@ ipcMain.handle("createMember", async (_event, args) => {
 
 ipcMain.handle("updateMember", async (_event, args) => {
   const q = `UPDATE Members 
-    SET Firstname = '${args.firstname}',
-    Lastname = '${args.lastname}',
-    Email = '${args.email}',
-    Address = '${args.address}',
-    Phone = '${args.phone}',
-    DateOfBirth = '${args.dateOfBirth}',
-    IsActive = '${args.isActive}',
-    Gender = '${args.gender}'
-    WHERE Id = '${args.id}'`;
+      SET Firstname = '${args.firstname}',
+      Lastname = '${args.lastname}',
+      Email = '${args.email}',
+      Address = '${args.address}',
+      Phone = '${args.phone}',
+      DateOfBirth = '${args.dateOfBirth}',
+      IsActive = '${args.isActive}',
+      Gender = '${args.gender}'
+      WHERE Id = '${args.id}'`;
   return await otherQuery(q);
 });
 
 ipcMain.handle("deleteMember", async (_event, id) => {
   const q = `DELETE FROM Members WHERE Id = '${id}';`;
   const data = await otherQuery(q);
+  return data;
+});
+
+////////////////////////////// GIVING //////////////////////////////
+ipcMain.handle("getOfferings", async (_event) => {
+  const q = `SELECT
+	C.Id AS Giving,
+    M.Firstname,
+    M.Lastname,
+    C.Tithe,
+    C.BuildingFund,
+    C.BestGift,
+    C.OfferingGifts,
+    C.SS,
+    C.Youth,
+    C.FlowerOrPlants,
+    C.FEBC700,
+    C.Dance,
+    C.Music,
+    C.Meralco,
+    C.ChildrensMinistry,
+    C.Others,
+    C.Total,
+    C.EntryDate
+  FROM
+    Giving AS C
+  INNER JOIN Members AS M ON
+    C.MemberId = M.Id;`;
+  const data = await getAllQuery(q);
   return data;
 });
 
