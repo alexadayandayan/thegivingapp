@@ -16,7 +16,6 @@ const MemberEdit: React.FC = () => {
   const { id } = useParams<{ id: number | any }>();
   const slicedId = id?.slice(1, -1);
   const [formData, setFormData] = useState<IMemberFormState>({
-    id: null,
     firstname: "",
     lastname: "",
     gender: "",
