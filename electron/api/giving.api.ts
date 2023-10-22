@@ -5,7 +5,7 @@ import { IOfferingFormState } from "@/Data/giving";
 const GivingApi = () => {
   ipcMain.handle("getOfferings", async (_event) => {
     const q = `SELECT
-          C.Id AS Giving,
+          C.Id as Id,
           M.Firstname,
           M.Lastname,
           M.Gender,
@@ -29,12 +29,13 @@ const GivingApi = () => {
         INNER JOIN Members AS M ON
           C.MemberId = M.Id;`;
     const data = await getAllQuery(q);
+    console.log(data);
     return data;
   });
 
   ipcMain.handle("getOfferingById", async (_event, id) => {
     const q = `SELECT
-      C.Id AS Giving,
+      C.Id as Id,
       M.Firstname,
       M.Lastname,
       M.Gender,
@@ -85,6 +86,12 @@ const GivingApi = () => {
       return await otherQuery(q);
     }
   );
+
+  ipcMain.handle("deleteOffering", async (_event, id) => {
+    const q = `DELETE FROM Giving WHERE Id = '${id}';`;
+    const data = await otherQuery(q);
+    return data;
+  });
 };
 
 export { GivingApi };

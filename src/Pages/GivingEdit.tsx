@@ -18,7 +18,6 @@ const GivingEdit: React.FC = () => {
   const { id } = useParams<{ id: number | any }>();
   const slicedId = id?.slice(1, -1);
   const [formData, setFormData] = useState<IOfferingFormState>({
-    giving: 0,
     bestGift: 0,
     buildingFund: 0,
     childrensMinistry: 0,
@@ -137,7 +136,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="buildingFund"
                         type="number"
                         value={formData.buildingFund}
                         onChange={handleChange}
@@ -145,7 +144,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="bestGift"
                         type="number"
                         value={formData.bestGift}
                         onChange={handleChange}
@@ -153,7 +152,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="fEBC700"
                         type="number"
                         value={formData.fEBC700}
                         onChange={handleChange}
@@ -161,7 +160,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="giftForPastor"
                         type="number"
                         value={formData.giftForPastor}
                         onChange={handleChange}
@@ -169,7 +168,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="giftForBrother"
                         type="number"
                         value={formData.giftForBrother}
                         onChange={handleChange}
@@ -177,7 +176,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="childrensMinistry"
                         type="number"
                         value={formData.childrensMinistry}
                         onChange={handleChange}
@@ -185,7 +184,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="flowerOrPlants"
                         type="number"
                         value={formData.flowerOrPlants}
                         onChange={handleChange}
@@ -193,7 +192,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="youth"
                         type="number"
                         value={formData.youth}
                         onChange={handleChange}
@@ -201,7 +200,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="dance"
                         type="number"
                         value={formData.dance}
                         onChange={handleChange}
@@ -209,7 +208,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="meralco"
                         type="number"
                         value={formData.meralco}
                         onChange={handleChange}
@@ -217,7 +216,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="music"
                         type="number"
                         value={formData.music}
                         onChange={handleChange}
@@ -225,7 +224,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="others"
                         type="number"
                         value={formData.others}
                         onChange={handleChange}
@@ -233,7 +232,7 @@ const GivingEdit: React.FC = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Form.Input
-                        name="tithe"
+                        name="total"
                         type="number"
                         value={formData.total}
                         onChange={handleChange}

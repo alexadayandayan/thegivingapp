@@ -21,7 +21,7 @@ export default function Members() {
   const handleDelete = async (e: React.SyntheticEvent<HTMLElement, Event>) => {
     const deleteMember = await window.api.deleteMember(e.currentTarget.id);
     if (deleteMember !== "Success") {
-      console.log("Failed on deleting member");
+      console.log("Failed in deleting member");
     }
   };
 

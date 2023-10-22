@@ -13,6 +13,13 @@ const Giving: React.FC = () => {
     setOfferings(giving);
   };
 
+  const handleDelete = async (e: React.SyntheticEvent<HTMLElement, Event>) => {
+    const deleteMember = await window.api.deleteOffering(e.currentTarget.id);
+    if (deleteMember !== "Success") {
+      console.log("Failed in deleting Offering");
+    }
+  };
+
   useEffect(() => {
     getOfferings();
   }, []);
@@ -70,7 +77,7 @@ const Giving: React.FC = () => {
               <Table.Body>
                 {offerings.length
                   ? offerings.map((offering) => (
-                      <Table.Row key={"uniqueId" + offering.Giving}>
+                      <Table.Row key={"uniqueId" + offering.Id}>
                         <Table.Cell>
                           <Header as="h4" image>
                             {offering.Gender === "female" ? (
@@ -86,9 +93,7 @@ const Giving: React.FC = () => {
                                 size="mini"
                               />
                             )}
-                            <Header.Content>
-                              {offering.Firstname}
-                            </Header.Content>
+                            <Header.Content>{offering.Id}</Header.Content>
                           </Header>
                         </Table.Cell>
                         <Table.Cell>{offering.Tithe}</Table.Cell>
@@ -111,8 +116,14 @@ const Giving: React.FC = () => {
                             Edit
                           </Link>
                         </Table.Cell>
-                        <Table.Cell selectable negative>
-                          <Link to="#">Delete</Link>
+                        <Table.Cell selectable>
+                          <Link
+                            id={offering.Id}
+                            to="/giving"
+                            onClick={handleDelete}
+                          >
+                            Delete
+                          </Link>
                         </Table.Cell>
                       </Table.Row>
                     ))

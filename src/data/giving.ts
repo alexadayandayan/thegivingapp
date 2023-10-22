@@ -1,5 +1,5 @@
 export interface IGiving {
-  Id: number;
+  Id: number | any;
   Giving: number;
   BestGift: number;
   BuildingFund: number;
@@ -22,7 +22,6 @@ export interface IGiving {
 }
 
 export interface IOfferingFormState {
-  giving: number;
   bestGift: number;
   buildingFund: number;
   childrensMinistry: number;

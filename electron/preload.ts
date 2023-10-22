@@ -1,3 +1,4 @@
+import { IGiving } from "@/Data/giving";
 import { IMember } from "@/Data/member";
 import { IUser } from "@/Data/user";
 import { contextBridge, ipcRenderer } from "electron";
@@ -15,16 +16,16 @@ const WINDOW_API = {
   login: (args: IUser) => ipcRenderer.invoke("login", args),
 
   getMembers: () => ipcRenderer.invoke("getMembers"),
-  getMemberById: (id: any) => ipcRenderer.invoke("getMemberById", id),
+  getMemberById: (id: string) => ipcRenderer.invoke("getMemberById", id),
   createMember: (args: IMember) => ipcRenderer.invoke("createMember", args),
   updateMember: (args: IMember) => ipcRenderer.invoke("updateMember", args),
-  deleteMember: (id: any) => ipcRenderer.invoke("deleteMember", id),
+  deleteMember: (id: string) => ipcRenderer.invoke("deleteMember", id),
 
   getOfferings: () => ipcRenderer.invoke("getOfferings"),
-  getOfferingById: (id: any) => ipcRenderer.invoke("getOfferingById", id),
-  createOffering: (args: IMember) => ipcRenderer.invoke("createOffering", args),
-  updateOffering: (args: IMember) => ipcRenderer.invoke("updateOffering", args),
-  deleteOffering: (id: any) => ipcRenderer.invoke("deleteOffering", id),
+  getOfferingById: (id: string) => ipcRenderer.invoke("getOfferingById", id),
+  createOffering: (args: IGiving) => ipcRenderer.invoke("createOffering", args),
+  updateOffering: (args: IGiving) => ipcRenderer.invoke("updateOffering", args),
+  deleteOffering: (id: string) => ipcRenderer.invoke("deleteOffering", id),
 };
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);
