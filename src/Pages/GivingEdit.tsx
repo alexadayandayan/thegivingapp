@@ -1,7 +1,8 @@
 import { lowerCaseKeys } from "@/utils/LowerCaseKeys";
 import DashboardSidebar from "../Components/DashboardSidebar";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { IOfferingFormState } from "../Data/giving";
 import {
   Button,
   Grid,
@@ -11,28 +12,6 @@ import {
   Image,
   Form,
 } from "semantic-ui-react";
-
-interface IOfferingFormState {
-  id: number | null;
-  giving: number;
-  bestGift: number;
-  buildingFund: number;
-  childrensMinistry: number;
-  dance: number;
-  fEBC700: number;
-  flowerOrPlants: number;
-  meralco: number;
-  music: number;
-  giftForPastor: number;
-  giftForBrother: number;
-  others: string;
-  tithe: number;
-  total: number;
-  youth: number;
-  firstname: string | null;
-  lastname: string | null;
-  gender: string | null;
-}
 
 const GivingEdit: React.FC = () => {
   const navigate = useNavigate();
@@ -69,6 +48,23 @@ const GivingEdit: React.FC = () => {
       ...x,
       isActive: x.isActive?.toString(),
     });
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    console.log(formData);
+    // const updateMember = await window.api.updateMember(formData);
+    // if (updateMember !== "Success") {
+    //   return;
+    // }
+    // navigate("/members");
   };
 
   useEffect(() => {
@@ -136,6 +132,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.tithe}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -143,6 +140,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.buildingFund}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -150,6 +148,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.bestGift}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -157,6 +156,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.fEBC700}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -164,6 +164,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.giftForPastor}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -171,6 +172,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.giftForBrother}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -178,6 +180,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.childrensMinistry}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -185,6 +188,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.flowerOrPlants}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -192,6 +196,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.youth}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -199,6 +204,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.dance}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -206,6 +212,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.meralco}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -213,6 +220,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.music}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -220,6 +228,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.others}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                     <Table.Cell>
@@ -227,6 +236,7 @@ const GivingEdit: React.FC = () => {
                         name="tithe"
                         type="number"
                         value={formData.total}
+                        onChange={handleChange}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -241,6 +251,7 @@ const GivingEdit: React.FC = () => {
                         labelPosition="left"
                         primary
                         size="small"
+                        onClick={handleSubmit}
                       >
                         <Icon name="like" /> Save
                       </Button>
@@ -249,6 +260,7 @@ const GivingEdit: React.FC = () => {
                         icon
                         labelPosition="left"
                         size="small"
+                        onClick={() => navigate("/giving")}
                       >
                         <Icon name="cancel" /> Cancel
                       </Button>
