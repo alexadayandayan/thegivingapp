@@ -27,7 +27,8 @@ const GivingApi = () => {
         FROM
           Giving AS C
         INNER JOIN Members AS M ON
-          C.MemberId = M.Id;`;
+          C.MemberId = M.Id
+          ORDER BY C.EntryDate DESC;`;
     const data = await getAllQuery(q);
     return data;
   });
