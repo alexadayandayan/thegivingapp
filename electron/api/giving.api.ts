@@ -2,7 +2,7 @@ import { ipcMain } from "electron";
 import { getAllQuery, getQuery, otherQuery } from "../query";
 import { IOfferingFormState } from "@/Data/giving";
 
-function GivingApi() {
+const GivingApi = () => {
   ipcMain.handle("getOfferings", async (_event) => {
     const q = `SELECT
           C.Id AS Giving,
@@ -81,6 +81,6 @@ function GivingApi() {
         WHERE Id = '${args.id}'`;
     return await otherQuery(q);
   });
-}
+};
 
 export { GivingApi };

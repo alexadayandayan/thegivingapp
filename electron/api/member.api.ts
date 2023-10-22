@@ -1,7 +1,7 @@
 import { ipcMain } from "electron";
 import { getAllQuery, getQuery, otherQuery } from "../query";
 
-function MemberApi() {
+const MemberApi = () => {
   ipcMain.handle("getMembers", async (_event) => {
     const q = `SELECT * FROM Members`;
     const data = await getAllQuery(q);
@@ -39,6 +39,6 @@ function MemberApi() {
     const data = await otherQuery(q);
     return data;
   });
-}
+};
 
 export { MemberApi };

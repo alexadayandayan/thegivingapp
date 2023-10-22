@@ -1,4 +1,5 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
+import { IMemberFormState } from "../Data/member";
 import { lowerCaseKeys } from "../utils/LowerCaseKeys";
 import React, {
   useState,
@@ -9,21 +10,6 @@ import React, {
 } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Form, Button, Grid, Message, Icon } from "semantic-ui-react";
-
-interface IMemberFormState {
-  id: number | null;
-  firstname: string;
-  lastname: string;
-  gender: string;
-  email: string;
-  address: string;
-  phone: string;
-  dateOfBirth: string;
-  image: File | null;
-  document: File | null;
-  isActive: string;
-  isDeleted: number | null;
-}
 
 const MemberEdit: React.FC = () => {
   const navigate = useNavigate();

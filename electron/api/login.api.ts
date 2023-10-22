@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { getQuery } from "../query";
 import { getCurrentUser, isLoggedIn, login, logout } from "../store";
 
-function LoginApi() {
+const LoginApi = () => {
   // Invoke
   ipcMain.handle("login", async (_event, args) => {
     const q = `SELECT
@@ -33,7 +33,7 @@ function LoginApi() {
   ipcMain.on("logout", async () => {
     return await logout();
   });
-}
+};
 
 const comparePassword = (password: string, hash: string) => {
   try {
