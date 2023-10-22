@@ -104,6 +104,37 @@ ipcMain.handle("getOfferings", async (_event) => {
   return data;
 });
 
+ipcMain.handle("getOfferingById", async (_event, id) => {
+  const q = `SELECT
+    C.Id AS Giving,
+    M.Firstname,
+    M.Lastname,
+    M.Gender,
+    C.Tithe,
+    C.BuildingFund,
+    C.BestGift,
+    C.GiftForPastor,
+    C.GiftForBrother,
+    C.Youth,
+    C.FlowerOrPlants,
+    C.FEBC700,
+    C.Dance,
+    C.Music,
+    C.Meralco,
+    C.ChildrensMinistry,
+    C.Others,
+    C.Total,
+    C.EntryDate
+  FROM
+    Giving AS C
+    INNER JOIN Members AS M ON
+    C.MemberId = M.Id
+      WHERE C.Id = '${id}'`;
+  const data = await getQuery(q);
+  return data;
+});
+
+////////////////////////////// USERS //////////////////////////////
 ipcMain.handle("users", async (_event: any) => {
   const q = `SELECT * FROM Users`;
   const data = await getQuery(q);
