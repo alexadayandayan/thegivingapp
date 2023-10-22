@@ -20,7 +20,7 @@ export default function GivingAdd() {
     navigate("/giving");
   };
   const [allMembers, setAllMembers] = useState<any[]>([]);
-  const [selectedMember, setSelectedMember]: any = useState(null);
+  const [_selectedMember, setSelectedMember]: any = useState(null);
 
   const getAllMembers = async () => {
     const members = await window.api.getMembers() as IMember | any;

@@ -1,146 +1,14 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import { getAllQuery, getQuery, otherQuery } from "./query";
-import { getCurrentUser, isLoggedIn, login, logout } from "./store";
 import path from "node:path";
-import bcrypt from "bcryptjs";
+import { app, BrowserWindow } from "electron";
+import { logout } from "./store";
+import { GivingApi } from "./api/giving.api";
+import { MemberApi } from "./api/member.api";
+import { LoginApi } from "./api/login.api";
 
 ///////////////////////////////////// IPC HANDLERS //////////////////////////////
-ipcMain.on("isLoggedIn", async (event) => {
-  const isLog = await isLoggedIn();
-  event.returnValue = isLog;
-});
-
-ipcMain.on("getCurrentUser", async (event) => {
-  const user = await getCurrentUser();
-  event.returnValue = user;
-});
-
-ipcMain.on("logout", async () => {
-  return await logout();
-});
-
-// Invoke
-ipcMain.handle("login", async (_event, args) => {
-  const q = `SELECT
-              u.*,
-              r.RoleName AS Role 
-              FROM Users u
-              JOIN Roles r ON u.RoleId  = r.Id
-              WHERE u.Username = '${args.username}'`;
-
-  const data = await getQuery(q);
-  if (comparePassword(args?.password, data?.Password)) {
-    //Save to localstorage
-    return await login(data);
-  }
-});
-
-////////////////////////////// MEMBERS //////////////////////////////
-ipcMain.handle("getMembers", async (_event) => {
-  const q = `SELECT * FROM Members`;
-  const data = await getAllQuery(q);
-  return data;
-});
-
-ipcMain.handle("getMemberById", async (_event, id) => {
-  const q = `SELECT * FROM Members WHERE Id='${id}'`;
-  const data = await getQuery(q);
-  return data;
-});
-
-ipcMain.handle("createMember", async (_event, args) => {
-  const q = `INSERT INTO Members (Firstname, Lastname, Email, Address, Phone, DateOfBirth, IsActive, IsDeleted, Gender, Image) VALUES
-  ('${args.firstname}', '${args.lastname}', '${args.email}', '${args.address}', '${args.phone}', '${args.dateOfBirth}', '${args.isActive}', '${args.isDeleted}', '${args.gender}', '${args.image}' )`;
-  return await otherQuery(q);
-});
-
-ipcMain.handle("updateMember", async (_event, args) => {
-  const q = `UPDATE Members 
-      SET Firstname = '${args.firstname}',
-      Lastname = '${args.lastname}',
-      Email = '${args.email}',
-      Address = '${args.address}',
-      Phone = '${args.phone}',
-      DateOfBirth = '${args.dateOfBirth}',
-      IsActive = '${args.isActive}',
-      Gender = '${args.gender}'
-      WHERE Id = '${args.id}'`;
-  return await otherQuery(q);
-});
-
-ipcMain.handle("deleteMember", async (_event, id) => {
-  const q = `DELETE FROM Members WHERE Id = '${id}';`;
-  const data = await otherQuery(q);
-  return data;
-});
-
-////////////////////////////// GIVING //////////////////////////////
-ipcMain.handle("getOfferings", async (_event) => {
-  const q = `SELECT
-    C.Id AS Giving,
-    M.Firstname,
-    M.Lastname,
-    M.Gender,
-    C.Tithe,
-    C.BuildingFund,
-    C.BestGift,
-    C.GiftForPastor,
-    C.GiftForBrother,
-    C.Youth,
-    C.FlowerOrPlants,
-    C.FEBC700,
-    C.Dance,
-    C.Music,
-    C.Meralco,
-    C.ChildrensMinistry,
-    C.Others,
-    C.Total,
-    C.EntryDate
-  FROM
-    Giving AS C
-  INNER JOIN Members AS M ON
-    C.MemberId = M.Id;`;
-  const data = await getAllQuery(q);
-  return data;
-});
-
-ipcMain.handle("getOfferingById", async (_event, id) => {
-  const q = `SELECT
-    C.Id AS Giving,
-    M.Firstname,
-    M.Lastname,
-    M.Gender,
-    C.Tithe,
-    C.BuildingFund,
-    C.BestGift,
-    C.GiftForPastor,
-    C.GiftForBrother,
-    C.Youth,
-    C.FlowerOrPlants,
-    C.FEBC700,
-    C.Dance,
-    C.Music,
-    C.Meralco,
-    C.ChildrensMinistry,
-    C.Others,
-    C.Total,
-    C.EntryDate
-  FROM
-    Giving AS C
-    INNER JOIN Members AS M ON
-    C.MemberId = M.Id
-      WHERE C.Id = '${id}'`;
-  const data = await getQuery(q);
-  return data;
-});
-
-////////////////////////////// USERS //////////////////////////////
-ipcMain.handle("users", async (_event: any) => {
-  const q = `SELECT * FROM Users`;
-  const data = await getQuery(q);
-  return await login(data);
-});
-
+GivingApi();
+MemberApi();
+LoginApi();
 ////////////////////////////////////////////////////////////////////////////////
 
 // The built directory structure
@@ -163,7 +31,7 @@ const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
+    icon: path.join(process.env.VITE_PUBLIC, "TGA.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       sandbox: false,
@@ -207,15 +75,3 @@ app.on("activate", () => {
 });
 
 app.whenReady().then(createWindow);
-
-const comparePassword = (password: string, hash: string) => {
-  try {
-    // Compare password
-    return bcrypt?.compareSync(password, hash);
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return false if error
-  return false;
-};

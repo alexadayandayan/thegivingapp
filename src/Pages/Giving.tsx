@@ -9,8 +9,15 @@ const Giving: React.FC = () => {
 
   const getOfferings = async () => {
     const giving = (await window.api.getOfferings()) as IGiving | any;
-    console.log(giving);
     setOfferings(giving);
+  };
+
+  const handleDelete = async (e: React.SyntheticEvent<HTMLElement, Event>) => {
+    const deleteMember = await window.api.deleteOffering(e.currentTarget.id);
+    if (deleteMember !== "Success") {
+      console.log("Failed in deleting Offering");
+    }
+    getOfferings();
   };
 
   useEffect(() => {
@@ -70,7 +77,7 @@ const Giving: React.FC = () => {
               <Table.Body>
                 {offerings.length
                   ? offerings.map((offering) => (
-                      <Table.Row key={"uniqueId" + offering.Giving}>
+                      <Table.Row key={"uniqueId" + offering.Id}>
                         <Table.Cell>
                           <Header as="h4" image>
                             {offering.Gender === "female" ? (
@@ -107,12 +114,18 @@ const Giving: React.FC = () => {
                         <Table.Cell>{offering.Total}</Table.Cell>
                         <Table.Cell>{offering.EntryDate}</Table.Cell>
                         <Table.Cell selectable positive>
-                          <Link to={`/giving-edit/'${offering.Giving}'`}>
+                          <Link to={`/giving-edit/'${offering.Id}'`}>
                             Edit
                           </Link>
                         </Table.Cell>
-                        <Table.Cell selectable negative>
-                          <Link to="#">Delete</Link>
+                        <Table.Cell selectable>
+                          <Link
+                            id={offering.Id}
+                            to="/giving"
+                            onClick={handleDelete}
+                          >
+                            Delete
+                          </Link>
                         </Table.Cell>
                       </Table.Row>
                     ))
