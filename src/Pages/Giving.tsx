@@ -1,10 +1,12 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
 import React, { useState, useEffect } from "react";
+import { Button, Grid, Icon, Table, Header, Image } from "semantic-ui-react";
 import { IGiving } from "../Data/giving";
 import { Link } from "react-router-dom";
-import { Button, Grid, Icon, Table, Header, Image } from "semantic-ui-react";
+import { useNavigate } from "react-router";
 
 const Giving: React.FC = () => {
+  let navigate = useNavigate();
   const [offerings, setOfferings] = useState<IGiving[]>([]);
 
   const getOfferings = async () => {
@@ -18,6 +20,10 @@ const Giving: React.FC = () => {
       console.log("Failed in deleting Offering");
     }
     getOfferings();
+  };
+
+  const onGivingAdd = () => {
+    navigate("/giving-add");
   };
 
   useEffect(() => {
@@ -44,6 +50,7 @@ const Giving: React.FC = () => {
                   labelPosition="left"
                   primary
                   size="small"
+                  onClick={onGivingAdd}
                 >
                   <Icon name="like" /> Add Giving Entry
                 </Button>
@@ -114,9 +121,7 @@ const Giving: React.FC = () => {
                         <Table.Cell>{offering.Total}</Table.Cell>
                         <Table.Cell>{offering.EntryDate}</Table.Cell>
                         <Table.Cell selectable positive>
-                          <Link to={`/giving-edit/'${offering.Id}'`}>
-                            Edit
-                          </Link>
+                          <Link to={`/giving-edit/'${offering.Id}'`}>Edit</Link>
                         </Table.Cell>
                         <Table.Cell selectable>
                           <Link

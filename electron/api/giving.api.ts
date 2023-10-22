@@ -63,6 +63,30 @@ const GivingApi = () => {
   });
 
   ipcMain.handle(
+    "createOffering",
+    async (_event, args: IOfferingFormState | any) => {
+      const q = `INSERT INTO Giving (MemberId, Tithe, BuildingFund, BestGift, GiftForPastor, GiftForBrother, Youth, FlowerOrPlants, FEBC700, Dance, Music, Meralco, ChildrensMinistry, Others, Total, EntryDate) VALUES
+        ('${args.memberId}',
+        '${args.tithe}',
+        '${args.buildingFund}',
+        '${args.bestGift}',
+        '${args.giftForPastor}',
+        '${args.giftForBrother}',
+        '${args.youth}',
+        '${args.flowerOrPlants}',
+        '${args.fEBC700}',
+        '${args.dance}',
+        '${args.music}',
+        '${args.meralco}',
+        '${args.childrensMinistry}',
+        '${args.others}',
+        '${args.total}',
+        '${new Date()}')`;
+      return await otherQuery(q);
+    }
+  );
+
+  ipcMain.handle(
     "updateOffering",
     async (_event, args: { id: string; giving: IOfferingFormState }) => {
       const q = `UPDATE Giving 
