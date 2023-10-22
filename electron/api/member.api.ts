@@ -1,5 +1,6 @@
 import { ipcMain } from "electron";
 import { getAllQuery, getQuery, otherQuery } from "../query";
+import { IMemberFormState } from "@/Data/member";
 
 const MemberApi = () => {
   ipcMain.handle("getMembers", async (_event) => {
@@ -20,16 +21,16 @@ const MemberApi = () => {
     return await otherQuery(q);
   });
 
-  ipcMain.handle("updateMember", async (_event, args) => {
+  ipcMain.handle("updateMember", async (_event, args: { id: string; member: IMemberFormState }) => {
     const q = `UPDATE Members 
-            SET Firstname = '${args.firstname}',
-            Lastname = '${args.lastname}',
-            Email = '${args.email}',
-            Address = '${args.address}',
-            Phone = '${args.phone}',
-            DateOfBirth = '${args.dateOfBirth}',
-            IsActive = '${args.isActive}',
-            Gender = '${args.gender}'
+            SET Firstname = '${args.member.firstname}',
+            Lastname = '${args.member.lastname}',
+            Email = '${args.member.email}',
+            Address = '${args.member.address}',
+            Phone = '${args.member.phone}',
+            DateOfBirth = '${args.member.dateOfBirth}',
+            IsActive = '${args.member.isActive}',
+            Gender = '${args.member.gender}'
             WHERE Id = '${args.id}'`;
     return await otherQuery(q);
   });

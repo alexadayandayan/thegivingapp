@@ -40,7 +40,6 @@ const GivingEdit: React.FC = () => {
   const getMemberOffering = async () => {
     const member = await window.api.getOfferingById(slicedId);
     const x = lowerCaseKeys(member);
-    console.log(x);
     setFormData({
       ...x,
       isActive: x.isActive?.toString(),

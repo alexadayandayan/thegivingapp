@@ -29,7 +29,6 @@ const GivingApi = () => {
         INNER JOIN Members AS M ON
           C.MemberId = M.Id;`;
     const data = await getAllQuery(q);
-    console.log(data);
     return data;
   });
 
@@ -66,7 +65,6 @@ const GivingApi = () => {
   ipcMain.handle(
     "updateOffering",
     async (_event, args: { id: string; giving: IOfferingFormState }) => {
-      console.log(args);
       const q = `UPDATE Giving 
         SET Tithe = '${args.giving.tithe}',
         BuildingFund = '${args.giving.buildingFund}',

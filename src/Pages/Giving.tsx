@@ -9,7 +9,6 @@ const Giving: React.FC = () => {
 
   const getOfferings = async () => {
     const giving = (await window.api.getOfferings()) as IGiving | any;
-    console.log(giving);
     setOfferings(giving);
   };
 
@@ -18,6 +17,7 @@ const Giving: React.FC = () => {
     if (deleteMember !== "Success") {
       console.log("Failed in deleting Offering");
     }
+    getOfferings();
   };
 
   useEffect(() => {
@@ -93,7 +93,9 @@ const Giving: React.FC = () => {
                                 size="mini"
                               />
                             )}
-                            <Header.Content>{offering.Id}</Header.Content>
+                            <Header.Content>
+                              {offering.Firstname}
+                            </Header.Content>
                           </Header>
                         </Table.Cell>
                         <Table.Cell>{offering.Tithe}</Table.Cell>
@@ -112,7 +114,7 @@ const Giving: React.FC = () => {
                         <Table.Cell>{offering.Total}</Table.Cell>
                         <Table.Cell>{offering.EntryDate}</Table.Cell>
                         <Table.Cell selectable positive>
-                          <Link to={`/giving-edit/'${offering.Giving}'`}>
+                          <Link to={`/giving-edit/'${offering.Id}'`}>
                             Edit
                           </Link>
                         </Table.Cell>

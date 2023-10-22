@@ -23,6 +23,7 @@ export default function Members() {
     if (deleteMember !== "Success") {
       console.log("Failed in deleting member");
     }
+    getAllMembers();
   };
 
   useEffect(() => {
