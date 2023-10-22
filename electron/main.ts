@@ -127,9 +127,9 @@ ipcMain.handle("getOfferingById", async (_event, id) => {
     C.EntryDate
   FROM
     Giving AS C
-  INNER JOIN Members AS M ON
-    C.Id = M.Id;
-    WHERE Id='${id}'`;
+    INNER JOIN Members AS M ON
+    C.MemberId = M.Id
+      WHERE C.Id = '${id}'`;
   const data = await getQuery(q);
   return data;
 });

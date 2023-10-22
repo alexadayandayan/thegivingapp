@@ -81,7 +81,7 @@ function App() {
             path="/giving-edit/:id"
             element={
               <ProtectedRoute>
-                <GivingTest />
+                <GivingEdit />
               </ProtectedRoute>
             }
           />
