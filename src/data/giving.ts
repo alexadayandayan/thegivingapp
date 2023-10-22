@@ -22,7 +22,6 @@ export interface IGiving {
 }
 
 export interface IOfferingFormState {
-  id: number | null;
   giving: number;
   bestGift: number;
   buildingFund: number;

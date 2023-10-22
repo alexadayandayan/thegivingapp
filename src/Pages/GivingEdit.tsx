@@ -16,8 +16,8 @@ import {
 const GivingEdit: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: number | any }>();
+  const slicedId = id?.slice(1, -1);
   const [formData, setFormData] = useState<IOfferingFormState>({
-    id: null,
     giving: 0,
     bestGift: 0,
     buildingFund: 0,
@@ -39,9 +39,7 @@ const GivingEdit: React.FC = () => {
   });
 
   const getMemberOffering = async () => {
-    console.log(id?.slice(1, -1));
-
-    const member = await window.api.getOfferingById(id?.slice(1, -1));
+    const member = await window.api.getOfferingById(slicedId);
     const x = lowerCaseKeys(member);
     console.log(x);
     setFormData({
@@ -59,12 +57,14 @@ const GivingEdit: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    // const updateMember = await window.api.updateMember(formData);
-    // if (updateMember !== "Success") {
-    //   return;
-    // }
-    // navigate("/members");
+    const updateMember = await window.api.updateOffering({
+      id: slicedId,
+      giving: formData,
+    });
+    if (updateMember !== "Success") {
+      return;
+    }
+    navigate("/giving");
   };
 
   useEffect(() => {

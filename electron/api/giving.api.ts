@@ -62,25 +62,29 @@ const GivingApi = () => {
     return data;
   });
 
-  ipcMain.handle("updateOffering", async (_event, args: IOfferingFormState) => {
-    const q = `UPDATE Giving 
-        SET Tithe = '${args.tithe}',
-        BuildingFund = '${args.buildingFund}',
-        BestGift = '${args.bestGift}',
-        GiftForPastor = '${args.giftForPastor}',
-        GiftForBrother = '${args.giftForBrother}',
-        Youth = '${args.youth}',
-        FlowerOrPlants = '${args.flowerOrPlants}',
-        FEBC700 = '${args.fEBC700}',
-        Dance = '${args.dance}',
-        Music = '${args.music}',
-        Meralco = '${args.meralco}',
-        ChildrensMinistry = '${args.childrensMinistry}',
-        Others = '${args.others}',
-        Total = '${args.total}',
+  ipcMain.handle(
+    "updateOffering",
+    async (_event, args: { id: string; giving: IOfferingFormState }) => {
+      console.log(args);
+      const q = `UPDATE Giving 
+        SET Tithe = '${args.giving.tithe}',
+        BuildingFund = '${args.giving.buildingFund}',
+        BestGift = '${args.giving.bestGift}',
+        GiftForPastor = '${args.giving.giftForPastor}',
+        GiftForBrother = '${args.giving.giftForBrother}',
+        Youth = '${args.giving.youth}',
+        FlowerOrPlants = '${args.giving.flowerOrPlants}',
+        FEBC700 = '${args.giving.fEBC700}',
+        Dance = '${args.giving.dance}',
+        Music = '${args.giving.music}',
+        Meralco = '${args.giving.meralco}',
+        ChildrensMinistry = '${args.giving.childrensMinistry}',
+        Others = '${args.giving.others}',
+        Total = '${args.giving.total}'
         WHERE Id = '${args.id}'`;
-    return await otherQuery(q);
-  });
+      return await otherQuery(q);
+    }
+  );
 };
 
 export { GivingApi };
