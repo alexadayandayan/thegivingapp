@@ -89,17 +89,15 @@ const panes = [
 export default function Reports() {
     return (
         <div>
-            <Grid columns='equal'>
+            <DashboardSidebar />
+            <Grid className="px-4 py-2">
                 <Grid.Column>
-                    <DashboardSidebar />
-                </Grid.Column>
-                <Grid.Column width={13}>
                     <div className="header-block">
                         <Grid columns='equal'>
                             <Grid.Column>
                                 <h3>Reports</h3>
                             </Grid.Column>
-                            <Grid.Column>
+                            <Grid.Column floated="right">
                                 <Icon name="calendar alternate"/>
                                 17 September 2023 - 23 September 2023    
                             </Grid.Column>

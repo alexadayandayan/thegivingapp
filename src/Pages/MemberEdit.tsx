@@ -121,12 +121,9 @@ const MemberEdit: React.FC = () => {
 
   return (
     <div>
-      <Grid columns="equal">
+      <DashboardSidebar />
+      <Grid className="px-4 py-2">
         <Grid.Column>
-          <DashboardSidebar />
-        </Grid.Column>
-
-        <Grid.Column width={13}>
           <div className="header-block">
             <Grid columns="equal">
               <Grid.Column>

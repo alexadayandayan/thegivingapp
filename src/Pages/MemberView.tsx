@@ -12,18 +12,15 @@ export default function MemberView() {
   };
   return (
     <div>
-      <Grid columns="equal">
+      <DashboardSidebar />
+      <Grid className="px-4 py-2">
         <Grid.Column>
-          <DashboardSidebar />
-        </Grid.Column>
-
-        <Grid.Column width={13}>
           <div className="header-block">
             <Grid columns="equal">
               <Grid.Column>
                 <h3>Member Profile</h3>
               </Grid.Column>
-              <Grid.Column>
+              <Grid.Column floated='right'>
                 <Button
                   floated="right"
                   icon
@@ -34,8 +31,6 @@ export default function MemberView() {
                 >
                   <Icon name="users" /> Back to Members
                 </Button>
-              </Grid.Column>
-              <Grid.Column>
                 <Button
                   floated="right"
                   icon

@@ -4,10 +4,8 @@ import DashboardSidebar from "../Components/DashboardSidebar";
 export default function Settings() {
   return (
     <div>
-      <Grid columns="equal">
-        <Grid.Column>
-          <DashboardSidebar />
-        </Grid.Column>
+      <DashboardSidebar />
+      <Grid className="px-4 py-2">
         <Grid.Column width={13}>
           <h3>Settings</h3>
         </Grid.Column>

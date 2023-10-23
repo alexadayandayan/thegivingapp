@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import "../App.scss";
 import "semantic-ui-css/semantic.min.css";
 import { Routes, Route, HashRouter } from "react-router-dom";

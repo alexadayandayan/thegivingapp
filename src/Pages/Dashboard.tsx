@@ -70,20 +70,15 @@ export default function Dashboard() {
   currentUser = window.api.getCurrentUser() as IUser;
   return (
     <div>
-      <Grid columns="equal">
+      <DashboardSidebar />
+      <Grid className="px-4 py-2">
         <Grid.Column>
-          <DashboardSidebar />
-        </Grid.Column>
-        <Grid.Column width={13}>
           <h3>Good Morning, {currentUser.Name}</h3>
 
           <Grid columns="equal">
-            <Grid.Column>
+            <Grid.Column col={12}>
               <Line options={options} data={data} />
             </Grid.Column>
-          </Grid>
-
-          <Grid columns="equal">
             <Grid.Column>
               <h3>Generate Reports</h3>
               <Table basic="very" celled>
