@@ -1,17 +1,29 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
-import { Grid, Icon, Header, Image, Table, Button } from "semantic-ui-react";
+import { Grid, Icon, Table, Button, Message, Header, Image } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import { IMember } from "../Data/member";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function Members() {
   let navigate = useNavigate();
-  const [allMembers, setAllMembers] = useState<any[]>([]);
-
+  const [data, setData] = useState<IMember[]>([]);
+  const [loading, setLoading] = useState(false);
+  
   const getAllMembers = async () => {
-    const members = (await window.api.getMembers()) as IMember | any;
-    setAllMembers(members);
+    // Set a loading state before making the API call
+    setLoading(true);
+    try {
+      const members = (await window.api.getMembers()) as IMember | any;
+      setData(members);
+    } catch (error) {
+      // Handle errors, e.g., display an error message to the user
+      console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state whether the call succeeds or fails
+      setLoading(false);
+    }
   };
 
   const onMemberAdd = () => {
@@ -21,7 +33,7 @@ export default function Members() {
   const handleDelete = async (e: React.SyntheticEvent<HTMLElement, Event>) => {
     const deleteMember = await window.api.deleteMember(e.currentTarget.id);
     if (deleteMember !== "Success") {
-      console.log("Failed in deleting member");
+      console.log("Failed in deleting data");
     }
     getAllMembers();
   };
@@ -30,14 +42,57 @@ export default function Members() {
     getAllMembers();
   }, []);
 
+  
+  const itemsPerPage = 10;
+  const [hasMore, setHasMore] = useState(data.length < itemsPerPage ? false : true);
+  const [records, setrecords] = useState(itemsPerPage);
+  const showItems = (posts: string | any[]) => {
+    var items = [];  
+    if(posts.length) {
+      for (var i = 0; i < records; i++) {      
+        items.push(
+          // <Table.Row key={"uniqueId" + posts[i]['Id']}>
+          //   <Table.Cell selectable>
+          //     <Link to="/member-view">
+          //       <Header as="h4" image>
+          //         {posts[i]['Gender'] === "female" ? (
+          //           <Image
+          //             src="https://react.semantic-ui.com/images/avatar/small/lena.png"
+          //             rounded
+          //             size="mini"
+          //           />
+          //         ) : (
+          //           <Image
+          //             src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
+          //             rounded
+          //             size="mini"
+          //           />
+          //         )}
+          //         <Header.Content>{posts[i]['Firstname'] + " " + posts[i]['Lastname']}</Header.Content>
+          //       </Header>
+          //     </Link>
+          //   </Table.Cell>
+          // </Table.Row>
+        );          
+      }
+    }
+    return items;
+  };
+  const loadMore = () => {
+    if (records === data.length) {
+      setHasMore(false);
+    } else {
+      setTimeout(() => {
+        setrecords(records + itemsPerPage);
+      }, 2000);
+    }
+  };
+
   return (
     <div>
-      <Grid columns="equal">
+      <DashboardSidebar />
+      <Grid className="px-4 py-2">
         <Grid.Column>
-          <DashboardSidebar />
-        </Grid.Column>
-
-        <Grid.Column width={13}>
           <div className="header-block">
             <Grid columns="equal">
               <Grid.Column>
@@ -56,57 +111,41 @@ export default function Members() {
                 </Button>
               </Grid.Column>
             </Grid>
+            <Message
+              success
+              header="Form Completed"
+              content="Member is successfully updated."
+            />
           </div>
-
-          <Table basic="very" celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell colSpan="2">Actions</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-              {allMembers.length
-                ? allMembers.map((member) => (
-                    <Table.Row key={"uniqueId" + member.Firstname}>
-                      <Table.Cell selectable>
-                        <Link to="/member-view">
-                          <Header as="h4" image>
-                            {member.Gender === "female" ? (
-                              <Image
-                                src="https://react.semantic-ui.com/images/avatar/small/lena.png"
-                                rounded
-                                size="mini"
-                              />
-                            ) : (
-                              <Image
-                                src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
-                                rounded
-                                size="mini"
-                              />
-                            )}
-                            <Header.Content>{member.Firstname}</Header.Content>
-                          </Header>
-                        </Link>
-                      </Table.Cell>
-                      <Table.Cell selectable>
-                        <Link to={`/member-edit/'${member.Id}'`}>Edit</Link>
-                      </Table.Cell>
-                      <Table.Cell selectable>
-                        <Link
-                          id={member.Id}
-                          to="/members"
-                          onClick={handleDelete}
-                        >
-                          Delete
-                        </Link>
-                      </Table.Cell>
+          
+          {loading ? (
+            <div className="loader-wrapper">
+              <span className="loader"></span>
+            </div>
+          ) : (              
+            <div className="content-wrapper">
+              <InfiniteScroll
+                  pageStart={0}
+                  loadMore={loadMore}
+                  hasMore={hasMore}
+                  loader={<span className="loader"></span>}
+                  useWindow={false}
+                >
+                <Table size="large" celled fixed selectable>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Name</Table.HeaderCell>
+                      <Table.HeaderCell colSpan="2">Actions</Table.HeaderCell>
                     </Table.Row>
-                  ))
-                : null}
-            </Table.Body>
-          </Table>
+                  </Table.Header>
+
+                  <Table.Body>
+                    {showItems(data)}
+                  </Table.Body>
+                </Table>
+              </InfiniteScroll>
+            </div>
+          )}
         </Grid.Column>
       </Grid>
     </div>
