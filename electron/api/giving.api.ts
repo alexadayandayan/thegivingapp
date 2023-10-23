@@ -66,6 +66,20 @@ const GivingApi = () => {
   ipcMain.handle(
     "createOffering",
     async (_event, args: IOfferingFormState | any) => {
+      const date = new Date();
+      const dateStr =
+        date.getFullYear() +
+        "-" +
+        ("00" + (date.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("00" + date.getDate()).slice(-2) +
+        " " +
+        ("00" + date.getHours()).slice(-2) +
+        ":" +
+        ("00" + date.getMinutes()).slice(-2) +
+        ":" +
+        ("00" + date.getSeconds()).slice(-2);
+
       const q = `INSERT INTO Giving (MemberId, Tithe, BuildingFund, BestGift, GiftForPastor, GiftForBrother, Youth, FlowerOrPlants, FEBC700, Dance, Music, Meralco, ChildrensMinistry, Others, Total, EntryDate) VALUES
         ('${args.memberId}',
         '${args.tithe}',
@@ -82,7 +96,7 @@ const GivingApi = () => {
         '${args.childrensMinistry}',
         '${args.others}',
         '${args.total}',
-        '${new Date()}')`;
+        '${dateStr}')`;
       return await otherQuery(q);
     }
   );
