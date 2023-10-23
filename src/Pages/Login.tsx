@@ -5,12 +5,11 @@ import { useEffect, useState } from "react";
 
 export default function Login() {
   let navigate = useNavigate();
-  let isLoggedIn = false;
-  let [isInvalid, setIsInvalid] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const verify = () => {
-    isLoggedIn = window.api.isLoggedIn();
-    if (isLoggedIn) {
+    if (window.api.isLoggedIn()) {
       navigate("/dashboard");
     }
   };
@@ -19,54 +18,72 @@ export default function Login() {
     const form = event.currentTarget;
     const username = form?.username?.value;
     const password = form?.password?.value;
-    const login = await window.api.login({ username, password });
 
-    if (login) {
+    // Set a loading state before making the API call
+    setLoading(true);
+    try {
+      await window.api.login({ username, password });
+    } catch (error) {
+      // Handle errors, e.g., display an error message to the user
+      console.error("Error with login data:", error);
+      setIsInvalid(true);
+    } finally {
+      // Reset the loading state whether the call succeeds or fails
+      setLoading(false);
+      setIsInvalid(false);
       navigate("/dashboard");
-    } else {
-        setIsInvalid(true);
     }
   };
 
-  useEffect(() => verify());
+  useEffect(() => {
+    verify();
+  }, []);
 
   return (
-    <div className="login-block">
-      <Segment placeholder className="login-block__form">
-        <Grid columns={2} relaxed="very" stackable>
-          <Grid.Column className="login-block__logo" verticalAlign="middle">
-            <div>
-              <img src={tgaLogo} className="logo tga" alt="TGA logo" />
-            </div>
-            <h2>THE GIVING APP</h2>
-          </Grid.Column>
+    loading ? (
+      <div className="loader-wrapper">
+        <span className="loader"></span>
+      </div>
+    ) : (    
+      <div className="login-block">
+        <Segment placeholder className="login-block__form">
+          <Grid columns={2} relaxed="very" stackable>
+            <Grid.Column className="login-block__logo" verticalAlign="middle">
+              <div>
+                <img src={tgaLogo} className="logo tga" alt="TGA logo" />
+              </div>
+              <h2>THE GIVING APP</h2>
+            </Grid.Column>
 
-          <Grid.Column verticalAlign="middle">
-            <p className="text-center text-red">{isInvalid ? "There's an error in your login details. Please try again." : ""}</p>
-            <Form  onSubmit={handleSubmit}>
-              <Form.Input
-                icon="user"
-                iconPosition="left"
-                label="Username"
-                placeholder="Username"
-                type="username"
-                name="username"
-              />
-              <Form.Input
-                icon="lock"
-                iconPosition="left"
-                label="Password"
-                placeholder="Password"
-                type="password"
-                name="password"
-              />
-              <Button type="submit">Login</Button>
-            </Form>
-          </Grid.Column>
-        </Grid>
+            <Grid.Column verticalAlign="middle">
+              <p className="text-center text-red">{isInvalid ? "There's an error in your login details. Please try again." : ""}</p>
+              <Form  onSubmit={handleSubmit}>
+                <Form.Input
+                  icon="user"
+                  iconPosition="left"
+                  label="Username"
+                  placeholder="Username"
+                  type="username"
+                  name="username"
+                  required
+                />
+                <Form.Input
+                  icon="lock"
+                  iconPosition="left"
+                  label="Password"
+                  placeholder="Password"
+                  type="password"
+                  name="password"
+                  required
+                />
+                <Button type="submit">Login</Button>
+              </Form>
+            </Grid.Column>
+          </Grid>
 
-        <Divider vertical></Divider>
-      </Segment>
-    </div>
+          <Divider vertical></Divider>
+        </Segment>
+      </div>
+    )
   );
 }

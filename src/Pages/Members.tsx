@@ -1,5 +1,5 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
-import { Grid, Icon, Table, Button, Message, Header, Image } from "semantic-ui-react";
+import { Grid, Icon, Table, Button, Message, Header, Image, Confirm } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import { IMember } from "../Data/member";
 import { useEffect, useState } from "react";
@@ -10,6 +10,9 @@ export default function Members() {
   let navigate = useNavigate();
   const [data, setData] = useState<IMember[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedID, setSelectedID] = useState(null);
+  const [notificationStatus, setNotificationStatus] = useState("");
   
   const getAllMembers = async () => {
     // Set a loading state before making the API call
@@ -30,13 +33,27 @@ export default function Members() {
     navigate("/member-add");
   };
 
-  const handleDelete = async (e: React.SyntheticEvent<HTMLElement, Event>) => {
-    const deleteMember = await window.api.deleteMember(e.currentTarget.id);
-    if (deleteMember !== "Success") {
-      console.log("Failed in deleting data");
+  const handleDelete = async () => {
+    // Set a loading state before making the API call
+    setLoading(true);
+    try {
+      await window.api.deleteMember(selectedID);      
+    } catch (error) {
+      // Handle errors, e.g., display an error message to the user
+      console.error("Failed in entry deletion due to the following error: " + error);
+    } finally {
+      // Reset the loading state whether the call succeeds or fails
+      setLoading(false);
+      setShowPopup(false);
+      getAllMembers();
+      setNotificationStatus('success');
     }
-    getAllMembers();
   };
+
+  const handleConfirmDelete = (e: { currentTarget: { id: React.SetStateAction<null>; }; }) => {
+    setShowPopup(true);
+    setSelectedID(e.currentTarget.id);
+  }
 
   useEffect(() => {
     getAllMembers();
@@ -74,15 +91,15 @@ export default function Members() {
                 </Link>
               </Table.Cell>
               <Table.Cell selectable positive>
-                <Link to={`/member-edit/${data[i]['Id']}`}>
+                <Link to={`/member-edit/${posts[i]['Id']}`}>
                   <Icon name='pencil' />
                 </Link>
               </Table.Cell>
               <Table.Cell selectable negative>
                 <Link
-                  id={data[i]['Id']}
+                  id={posts[i]['Id']}
                   to="/members"
-                  onClick={handleDelete}
+                  onClick={handleConfirmDelete}
                 >
                   <Icon name='close' />
                 </Link>
@@ -127,11 +144,22 @@ export default function Members() {
                 </Button>
               </Grid.Column>
             </Grid>
-            <Message
-              success
-              header="Form Completed"
-              content="Member is successfully updated."
-            />
+
+            {notificationStatus && 
+              (notificationStatus === "success" ? (
+                <Message              
+                  success
+                  header='Deletion Status'
+                  content="Member is successfully deleted."
+                />
+              ) : (
+                <Message              
+                  negative
+                  header='Deletion Status'
+                  content="Failed in member deletion."
+                />
+              )
+            )}
           </div>
           
           {loading ? (
@@ -140,6 +168,12 @@ export default function Members() {
             </div>
           ) : (              
             <div className="content-wrapper">
+              <Confirm
+                open={showPopup}
+                header='Confirm entry deletion'
+                onCancel={() => {setShowPopup(false); setNotificationStatus('')}}
+                onConfirm={handleDelete}
+              />   
               <InfiniteScroll
                   pageStart={0}
                   loadMore={loadMore}

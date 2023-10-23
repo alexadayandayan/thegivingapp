@@ -15,7 +15,9 @@ body {
   will-change: filter;
   transition: filter 300ms;
   &-small {
-    height: 50px;
+    height: 15px;
+    width: auto !important;
+    padding-right: 10px;
   }
 }
 .logo:hover {
@@ -67,9 +69,6 @@ body {
     }
   }
 }
-.tga {
-  padding-bottom: 20px;
-}
 
 .loader-wrapper {
   height: 80vh;
@@ -110,4 +109,8 @@ body {
   overflow: scroll;
   max-height: 75vh;
   max-width: 100%;
+}
+
+.ui.modal {
+  height: unset;
 }

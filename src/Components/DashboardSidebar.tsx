@@ -31,10 +31,7 @@ export default function DashboardSidebar() {
             <Segment inverted className='rounded-0'>
                 <Menu inverted pointing secondary>
                     <Menu.Item as='a' onClick={onDashboard}>
-                        {/* <Icon>
-                            <img src={tgaLogo} className="logo-small tga" alt="TGA logo" />
-                        </Icon> */}
-                        <Icon name='home' />
+                        <img src={tgaLogo} className="logo-small" alt="TGA logo" />                        
                         Dashboard
                     </Menu.Item>
                     <Menu.Item as='a' onClick={onMembers}>

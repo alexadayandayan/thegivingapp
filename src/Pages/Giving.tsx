@@ -1,6 +1,6 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
 import React, { useState, useEffect } from "react";
-import { Button, Grid, Icon, Table, Confirm } from "semantic-ui-react";
+import { Button, Grid, Icon, Table, Confirm, Message } from "semantic-ui-react";
 import { IGiving } from "../Data/giving";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
@@ -12,6 +12,9 @@ const Giving: React.FC = () => {
   const [data, setData] = useState<IGiving[]>([]);
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [selectedID, setSelectedID] = useState(null);
+  const [notificationStatus, setNotificationStatus] = useState("");
+
 
   const getOfferings = async () => {
     // Set a loading state before making the API call
@@ -28,20 +31,27 @@ const Giving: React.FC = () => {
     }
   };
 
-  const handleDelete = async (e: React.SyntheticEvent<HTMLElement, Event>) => {
+  const handleDelete = async () => {
     // Set a loading state before making the API call
     setLoading(true);
     try {
-      await window.api.deleteOffering(e.currentTarget.id);      
+      await window.api.deleteOffering(selectedID);      
     } catch (error) {
       // Handle errors, e.g., display an error message to the user
-      console.error("Failed in deleting data: ", error);
+      console.error("Failed in entry deletion due to the following error: " + error);
     } finally {
       // Reset the loading state whether the call succeeds or fails
       setLoading(false);
+      setShowPopup(false);
       getOfferings();
+      setNotificationStatus('success');
     }
   };
+
+  const handleConfirmDelete = (e: { currentTarget: { id: React.SetStateAction<null>; }; }) => {
+    setShowPopup(true);
+    setSelectedID(e.currentTarget.id);
+  }
 
   const onGivingAdd = () => {
     navigate("/giving-add");
@@ -52,7 +62,7 @@ const Giving: React.FC = () => {
   }, []);
 
   const itemsPerPage = 10;
-  const [hasMore, setHasMore] = useState(data.length < itemsPerPage ? false : true);
+  const [hasMore, setHasMore] = useState(data.length > itemsPerPage ? false : true);
   const [records, setrecords] = useState(itemsPerPage);
   const showItems = (posts: string | any[]) => {
     var items = [];    
@@ -86,13 +96,13 @@ const Giving: React.FC = () => {
                 <Link
                   id={posts[i]['Id']}
                   to="/giving"
-                  onClick={() => setShowPopup(true)}
+                  onClick={handleConfirmDelete}
                 >
                   <Icon name='close' />
                 </Link>
               </Table.Cell>
             </Table.Row>
-          );    
+          );  
         }
       }
     }
@@ -132,12 +142,35 @@ const Giving: React.FC = () => {
               </Grid.Column>
             </Grid>
           </div>
+
+          {notificationStatus && 
+            (notificationStatus === "success" ? (
+              <Message              
+                success
+                header='Deletion Status'
+                content="Successful entry deletion."
+              />
+            ) : (
+              <Message              
+                negative
+                header='Deletion Status'
+                content="Failed in entry deletion."
+              />
+            )
+          )}
+
           {loading ? (
             <div className="loader-wrapper">
               <span className="loader"></span>
             </div>
           ) : (              
             <div className="content-wrapper">
+              <Confirm
+                open={showPopup}
+                header='Confirm entry deletion'
+                onCancel={() => {setShowPopup(false); setNotificationStatus('')}}
+                onConfirm={handleDelete}
+              />     
               <InfiniteScroll
                   pageStart={0}
                   loadMore={loadMore}
@@ -172,13 +205,7 @@ const Giving: React.FC = () => {
                     {showItems(data)}
                   </Table.Body>
                 </Table>
-              </InfiniteScroll>
-              <Confirm
-                open={showPopup}
-                header='Confirm entry deletion'
-                onCancel={() => setShowPopup(false)}
-                onConfirm={handleDelete}
-              />              
+              </InfiniteScroll>           
             </div>
           )}
         </Grid.Column>

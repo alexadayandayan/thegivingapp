@@ -97,7 +97,7 @@ export default function Reports() {
                             <Grid.Column>
                                 <h3>Reports</h3>
                             </Grid.Column>
-                            <Grid.Column>
+                            <Grid.Column floated="right">
                                 <Icon name="calendar alternate"/>
                                 17 September 2023 - 23 September 2023    
                             </Grid.Column>
