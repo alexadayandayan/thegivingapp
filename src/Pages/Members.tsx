@@ -50,30 +50,46 @@ export default function Members() {
     var items = [];  
     if(posts.length) {
       for (var i = 0; i < records; i++) {      
-        items.push(
-          // <Table.Row key={"uniqueId" + posts[i]['Id']}>
-          //   <Table.Cell selectable>
-          //     <Link to="/member-view">
-          //       <Header as="h4" image>
-          //         {posts[i]['Gender'] === "female" ? (
-          //           <Image
-          //             src="https://react.semantic-ui.com/images/avatar/small/lena.png"
-          //             rounded
-          //             size="mini"
-          //           />
-          //         ) : (
-          //           <Image
-          //             src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
-          //             rounded
-          //             size="mini"
-          //           />
-          //         )}
-          //         <Header.Content>{posts[i]['Firstname'] + " " + posts[i]['Lastname']}</Header.Content>
-          //       </Header>
-          //     </Link>
-          //   </Table.Cell>
-          // </Table.Row>
-        );          
+        if(posts[i] != undefined) {
+          items.push(
+            <Table.Row key={"uniqueId" + posts[i]['Id']}>
+              <Table.Cell selectable>
+                <Link to="/member-view">
+                  <Header as="h4" image>
+                    {posts[i]['Gender'] === "female" ? (
+                      <Image
+                        src="https://react.semantic-ui.com/images/avatar/small/lena.png"
+                        rounded
+                        size="mini"
+                      />
+                    ) : (
+                      <Image
+                        src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
+                        rounded
+                        size="mini"
+                      />
+                    )}
+                    <Header.Content>{posts[i]['Firstname'] + " " + posts[i]['Lastname']}</Header.Content>
+                  </Header>
+                </Link>
+              </Table.Cell>
+              <Table.Cell selectable positive>
+                <Link to={`/member-edit/${data[i]['Id']}`}>
+                  <Icon name='pencil' />
+                </Link>
+              </Table.Cell>
+              <Table.Cell selectable negative>
+                <Link
+                  id={data[i]['Id']}
+                  to="/members"
+                  onClick={handleDelete}
+                >
+                  <Icon name='close' />
+                </Link>
+              </Table.Cell>
+            </Table.Row>
+          );  
+        }        
       }
     }
     return items;

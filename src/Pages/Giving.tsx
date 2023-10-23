@@ -58,40 +58,42 @@ const Giving: React.FC = () => {
     var items = [];    
     if(posts.length) {
       for (var i = 0; i < records; i++) {    
-        items.push(
-          <Table.Row key={"uniqueId" + posts[i]['Id']}>
-            <Table.Cell>{posts[i]['Firstname']}</Table.Cell>
-            <Table.Cell>{posts[i]['Tithe']}</Table.Cell>
-            <Table.Cell>{posts[i]['BuildingFund']}</Table.Cell>
-            <Table.Cell>{posts[i]['BestGift']}</Table.Cell>
-            <Table.Cell>{posts[i]['FEBC700']}</Table.Cell>
-            <Table.Cell>{posts[i]['GiftForPastor']}</Table.Cell>
-            <Table.Cell>{posts[i]['GiftForBrother']}</Table.Cell>
-            <Table.Cell>{posts[i]['ChildrensMinistry']}</Table.Cell>
-            <Table.Cell>{posts[i]['FlowerOrPlants']}</Table.Cell>
-            <Table.Cell>{posts[i]['Youth']}</Table.Cell>
-            <Table.Cell>{posts[i]['Dance']}</Table.Cell>
-            <Table.Cell>{posts[i]['Meralco']}</Table.Cell>
-            <Table.Cell>{posts[i]['Music']}</Table.Cell>
-            <Table.Cell>{JSON.stringify(posts[i]['Others'])}</Table.Cell>
-            <Table.Cell>{posts[i]['Total']}</Table.Cell>
-            <Table.Cell>{format(new Date(posts[i]['EntryDate']), 'MM/dd/yyyy')}</Table.Cell>
-            <Table.Cell selectable positive>
-              <Link to={`/giving-edit/${posts[i]['Id']}`}>
-                <Icon name='pencil' />
-              </Link>
-            </Table.Cell>
-            <Table.Cell selectable negative>
-              <Link
-                id={posts[i]['Id']}
-                to="/giving"
-                onClick={() => setShowPopup(true)}
-              >
-                <Icon name='close' />
-              </Link>
-            </Table.Cell>
-          </Table.Row>
-        );    
+        if(posts[i] != undefined) {
+          items.push(
+            <Table.Row key={"uniqueId" + posts[i]['Id']}>
+              <Table.Cell>{posts[i]['Firstname']}</Table.Cell>
+              <Table.Cell>{posts[i]['Tithe']}</Table.Cell>
+              <Table.Cell>{posts[i]['BuildingFund']}</Table.Cell>
+              <Table.Cell>{posts[i]['BestGift']}</Table.Cell>
+              <Table.Cell>{posts[i]['FEBC700']}</Table.Cell>
+              <Table.Cell>{posts[i]['GiftForPastor']}</Table.Cell>
+              <Table.Cell>{posts[i]['GiftForBrother']}</Table.Cell>
+              <Table.Cell>{posts[i]['ChildrensMinistry']}</Table.Cell>
+              <Table.Cell>{posts[i]['FlowerOrPlants']}</Table.Cell>
+              <Table.Cell>{posts[i]['Youth']}</Table.Cell>
+              <Table.Cell>{posts[i]['Dance']}</Table.Cell>
+              <Table.Cell>{posts[i]['Meralco']}</Table.Cell>
+              <Table.Cell>{posts[i]['Music']}</Table.Cell>
+              <Table.Cell>{JSON.stringify(posts[i]['Others'])}</Table.Cell>
+              <Table.Cell>{posts[i]['Total']}</Table.Cell>
+              <Table.Cell>{format(new Date(posts[i]['EntryDate']), 'MM/dd/yyyy')}</Table.Cell>
+              <Table.Cell selectable positive>
+                <Link to={`/giving-edit/${posts[i]['Id']}`}>
+                  <Icon name='pencil' />
+                </Link>
+              </Table.Cell>
+              <Table.Cell selectable negative>
+                <Link
+                  id={posts[i]['Id']}
+                  to="/giving"
+                  onClick={() => setShowPopup(true)}
+                >
+                  <Icon name='close' />
+                </Link>
+              </Table.Cell>
+            </Table.Row>
+          );    
+        }
       }
     }
     return items;
