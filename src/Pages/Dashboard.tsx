@@ -58,7 +58,7 @@ export const data = {
     {
       label: "Dataset 1",
       data: labels.map(() => faker.faker.datatype.number({ min: 0, max: 1000 })),
-      borderColor: "rgb(255, 99, 132)",
+      borderColor: "#2d537d",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
   ],
@@ -68,12 +68,27 @@ export default function Dashboard() {
   let currentUser = null;
 
   currentUser = window.api.getCurrentUser() as IUser;
+  let greeting = "Morning";
+
+  var today = new Date();
+  var curHr = today.getHours();
+
+  
+  if (curHr < 12) {
+    greeting = "Morning";
+  } else if (curHr < 18) {
+    greeting = "Afternoon";
+  } else {
+    greeting = "Evening";
+  }
+
+
   return (
     <div>
       <DashboardSidebar />
       <Grid className="px-4 py-2">
         <Grid.Column>
-          <h3>Good Morning, {currentUser.Name}</h3>
+          <h3>Good {greeting}, {currentUser.Name}!</h3>
 
           <Grid columns="equal">
             <Grid.Column col={12}>

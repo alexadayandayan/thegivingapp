@@ -57,6 +57,7 @@ export default function Login() {
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link href="https://fonts.googleapis.com/css2?family=Meddon&display=swap" rel="stylesheet" />
         </Helmet>
+
         <div className="background">
           <div className="flower roundpetal petal5 flower1">
             <div className="petal">
@@ -264,7 +265,6 @@ export default function Login() {
             </div>
           </div>
         </div>
-
 
         <Segment placeholder className="login-block__form">
           <Grid>
