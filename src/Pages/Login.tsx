@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 
 export default function Login() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [isInvalid, setIsInvalid] = useState(false);
   const [loading, setLoading] = useState(false);
 

@@ -8,10 +8,6 @@ body {
     overflow-y: hidden;
 }
 
-// body {
-// 	background : #FEFDE3 !important;
-// }        
-
 .logo {
     height: 150px;
     width: auto;
@@ -111,7 +107,7 @@ body {
     display: inline-block;
     position: relative;
     border: 3px solid;
-    border-color: #2d537d #0000 #121212 #0000;
+    border-color: #8EACCD #0000 #91b020 #0000;
     border-radius: 50%;
     box-sizing: border-box;
     animation: 1s rotate linear infinite;
@@ -124,12 +120,12 @@ body {
     left: 0;
     position: absolute;
     border: 10px solid transparent;
-    border-bottom-color: #121212;
+    border-bottom-color: #91b020;
     transform: translate(-10px, 19px) rotate(-35deg);
 }
 
 .loader:after {
-    border-color: #CADC88 #0000 #0000 #0000;
+    border-color: #8EACCD #0000 #0000 #0000;
     transform: translate(32px, 3px) rotate(-35deg);
 }
 

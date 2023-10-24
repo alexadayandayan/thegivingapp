@@ -1,4 +1,3 @@
-console.log("scripts!");
 import $ from 'jquery';
 
 var sceneTree = new Scene({
