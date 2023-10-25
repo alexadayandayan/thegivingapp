@@ -2,11 +2,28 @@ import { Segment, Menu, Icon } from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
 import tgaLogo from '../assets/TGA.png';
 import { useState } from "react";
+import { IUser } from "../Data/user";
 
 
 export default function DashboardSidebar() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    let currentUser = null;
+  
+    currentUser = window.api.getCurrentUser() as IUser;
+    let greeting = "Morning";
+  
+    var today = new Date();
+    var curHr = today.getHours();
+  
+  
+    if (curHr < 12) {
+      greeting = "Morning";
+    } else if (curHr < 18) {
+      greeting = "Afternoon";
+    } else {
+      greeting = "Evening";
+    }
 
     const onLogout = async (event: any) => {
         // Set a loading state before making the API call
@@ -42,8 +59,10 @@ export default function DashboardSidebar() {
 
     return (
         <>
-            <Segment inverted className='rounded-0'>
-                <Menu inverted pointing secondary>
+            <Segment inverted className='rounded-0 d-flex justify-content-between'>
+                
+                <h3 className='d-flex align-items-center mb-0'>Good {greeting}, {currentUser.Name}!</h3>
+                <Menu className='mt-0' inverted pointing secondary>
                     <Menu.Item as='a' onClick={onDashboard}>
                         <img src={tgaLogo} className="logo-small" alt="TGA logo" />
                         Dashboard

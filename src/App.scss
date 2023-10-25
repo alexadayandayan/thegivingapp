@@ -136,7 +136,7 @@ body {
 }
 
 .content-wrapper {
-    overflow: scroll;
+    overflow-y: scroll;
     max-height: 75vh;
     max-width: 100%;
 }
@@ -154,6 +154,9 @@ body {
 }
 .ui.secondary.inverted.pointing.menu {
     border: 0 !important;
+}
+.big-text {
+    font-size: 100px;
 }
 
 
