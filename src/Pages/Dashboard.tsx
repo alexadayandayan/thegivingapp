@@ -1,7 +1,9 @@
 import { Grid, Table } from "semantic-ui-react";
-import DashboardSidebar from "../Components/DashboardSidebar";
-import DashboardMonthly from "../Components/DashboardMonthly";
+import DashboardSidebar from "@/Components/DashboardSidebar";
+import DashboardMonthly from "@/Components/DashboardMonthly";
 import DashboardYearly from "@/Components/DashboardYearly";
+import DashboardCalendar from "@/Components/DashboardCalendar";
+
 
 export default function Dashboard() {
   return (
@@ -45,27 +47,9 @@ export default function Dashboard() {
                   </Table.Body>
                 </Table>
               </Grid.Column>
-              <Grid.Column>
+              <Grid.Column width={5}>
                 <h3>Upcoming Events</h3>
-                <Table basic="very" celled>
-                  <Table.Body>
-                    <Table.Row>
-                      <Table.Cell selectable>
-                        <a href="/member-view">Weekly</a>
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell selectable>
-                        <a href="/member-view">Monthly</a>
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell selectable>
-                        <a href="/member-view">Annually</a>
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
+                <DashboardCalendar />
               </Grid.Column>
             </Grid.Row>
           </Grid>
