@@ -96,7 +96,7 @@ const Giving: React.FC = () => {
               <Table.Cell>{posts[i]['Dance']}</Table.Cell>
               <Table.Cell>{posts[i]['Meralco']}</Table.Cell>
               <Table.Cell>{posts[i]['Music']}</Table.Cell>
-              <Table.Cell>{JSON.stringify(posts[i]['Others'])}</Table.Cell>
+              <Table.Cell>{/*JSON.stringify(posts[i]['Others'])*/}</Table.Cell>
               <Table.Cell>{posts[i]['Total']}</Table.Cell>
               <Table.Cell>{format(new Date(posts[i]['EntryDate']), 'MM/dd/yyyy')}</Table.Cell>
               <Table.Cell selectable positive>
