@@ -48,7 +48,7 @@ const Giving: React.FC = () => {
     }
   };
 
-  const handleConfirmDelete = (e: { currentTarget: { id: React.SetStateAction<null>; }; }) => {
+  const handleConfirmDelete = (e: { currentTarget: { id: React.SetStateAction<null>; }; } | any) => {
     setShowPopup(true);
     setSelectedID(e.currentTarget.id);
   }

@@ -7,7 +7,6 @@ import { IOfferingFormState } from "../Data/giving";
 
 const GivingTest: React.FC = () => {
   const navigate = useNavigate();
-  let memberId: string = "";
   const [allMembers, setAllMembers] = useState<any[]>([]);
   const [formData, setFormData] = useState<IOfferingFormState | any>({
     bestGift: 0,

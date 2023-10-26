@@ -51,7 +51,7 @@ export default function Login() {
           <script
             src="../src/assets/scripts.js"
             type="module"
-            crossorigin="anonymous"
+            crossOrigin="anonymous"
             defer
           ></script>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
