@@ -1,58 +1,106 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Button, Grid, Icon, Table, Form, Dropdown } from "semantic-ui-react";
+import React, { FormEvent, useEffect, useState } from "react";
+import { Grid, Icon, Form, Tab, Message } from "semantic-ui-react";
 import { useNavigate } from "react-router";
-import { IMember } from "../Data/member";
-import { IOfferingFormState } from "../Data/giving";
+import { IReportFormState } from "../Data/report";
+import { getDaysInMonth, startOfWeek } from "date-fns";
 
 const GivingTest: React.FC = () => {
   const navigate = useNavigate();
-  const [allMembers, setAllMembers] = useState<any[]>([]);
-  const [formData, setFormData] = useState<IOfferingFormState | any>({
-    bestGift: 0,
-    buildingFund: 0,
-    childrensMinistry: 0,
-    dance: 0,
-    fEBC700: 0,
-    flowerOrPlants: 0,
-    meralco: 0,
-    music: 0,
-    giftForPastor: 0,
-    giftForBrother: 0,
-    others: "",
-    tithe: 0,
-    total: 0,
-    youth: 0,
-    firstname: null,
-    lastname: null,
-    gender: null,
+
+  // const [allMembers, setAllMembers] = useState<any[]>([]);
+  const [formData, setFormData] = useState<IReportFormState | any>({
+    year: "",
+    month: "",
+    week: "",
+    gender: "",
   });
 
-  const getAllMembers = async () => {
-    const members = (await window.api.getMembers()) as IMember | any;
-    const options: any = members?.map((m: any) => ({
-      key: m.Id,
-      text: `${m.Firstname} ${m.Lastname}`,
-      value: m.Id,
-    }));
-    setAllMembers(options);
+  const getNumberOfWeeksInMonth = () => {
+    const month = !!formData.month ? formData.month : new Date().getMonth();
+    // Get the start of the month
+    const startOfMonth = startOfWeek(
+      new Date(new Date().getFullYear(), month, 1)
+    );
+
+    // Calculate the number of days in the month
+    const numberOfDaysInMonth = getDaysInMonth(
+      new Date(new Date().getFullYear(), month + 1, 0)
+    );
+
+    // Calculate the number of weeks in the month
+    const numberOfWeeksInMonth = Math.ceil(
+      (numberOfDaysInMonth - startOfMonth.getDay()) / 7
+    );
+
+    // Return the number of weeks in the month
+    return numberOfWeeksInMonth;
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const [options, setOptions] = useState<
+    { key: number; text: string; value: number }[]
+  >([]);
 
-  const handleMemberChange = (
+  const [numberOfWeeksInCurrentMonth, setNumberOfWeeksInSelectedMonth] =
+    useState(getNumberOfWeeksInMonth());
+
+  useEffect(() => {
+    const newOptions = [];
+    for (let i = 1; i <= numberOfWeeksInCurrentMonth; i++) {
+      newOptions.push({
+        key: i,
+        text: `Week ${i}`,
+        value: i,
+      });
+    }
+
+    setOptions(newOptions);
+  }, [numberOfWeeksInCurrentMonth]);
+
+  const yearOptions = [
+    { key: "2020", text: "2020", value: "2020" },
+    { key: "2021", text: "2021", value: "2021" },
+    { key: "2022", text: "2022", value: "2022" },
+    { key: "2023", text: "2023", value: "2023" },
+  ];
+  const monthOptions = [
+    { key: "Jan", text: "January", value: "1" },
+    { key: "Feb", text: "February", value: "2" },
+    { key: "Mar", text: "March", value: "3" },
+    { key: "Apr", text: "April", value: "4" },
+    { key: "May", text: "May", value: "5" },
+    { key: "Jun", text: "June", value: "6" },
+    { key: "Jul", text: "July", value: "7" },
+    { key: "Aug", text: "August", value: "8" },
+    { key: "Sep", text: "September", value: "9" },
+    { key: "Oct", text: "October", value: "10" },
+    { key: "Nov", text: "November", value: "11" },
+    { key: "Dec", text: "December", value: "12" },
+  ];
+  let weekOptions = [
+    { key: "all", text: "All Weeks", value: 0 },
+    { key: "week1", text: "Week 1", value: 1 },
+    { key: "week2", text: "Week 2", value: 2 },
+    { key: "week3", text: "Week 3", value: 3 },
+    { key: "week4", text: "Week 4", value: 4 },
+  ];
+  const genderOptions = [
+    { key: "A", text: "All", value: "all" },
+    { key: "M", text: "Male", value: "male" },
+    { key: "F", text: "Female", value: "female" },
+  ];
+
+  // this is not yet working but will enhance oc
+  const handleMonthChange = (
     _e: React.SyntheticEvent<HTMLElement, Event>,
     data: any
   ) => {
     setFormData({
       ...formData,
-      memberId: data.value,
+      month: data.value,
     });
+
+    setNumberOfWeeksInSelectedMonth(getNumberOfWeeksInMonth());
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -64,204 +112,91 @@ const GivingTest: React.FC = () => {
     navigate("/giving");
   };
 
-  useEffect(() => {
-    getAllMembers();
-  }, []);
+  const panes = [
+    {
+      menuItem: "Create Report",
+      render: () => (
+        <Tab.Pane attached={false}>
+          <Message
+            success
+            header="Report Generated"
+            content="You've successfully generated a report, you can locate the report file in your Downloads folder."
+          />
+          <Form>
+            <Form.Group widths="equal">
+              <Form.Select
+                fluid
+                label="Year"
+                options={yearOptions}
+                value={formData.year}
+                placeholder="Select Year"
+              />
+              <Form.Select
+                fluid
+                label="Month"
+                options={monthOptions}
+                value={formData.month}
+                placeholder="Select Month"
+                onChange={handleMonthChange}
+              />
+            </Form.Group>
+
+            <Form.Group widths="equal">
+              <Form.Select
+                fluid
+                label="Week"
+                options={options}
+                value={formData.week}
+                placeholder="Select Week"
+              />
+
+              <Form.Select
+                fluid
+                label="Gender"
+                options={options}
+                value={formData.gender}
+                placeholder="Select Gender"
+              />
+            </Form.Group>
+            <Form.Button positive>Generate</Form.Button>
+          </Form>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: "Recent Reports",
+      render: () => <Tab.Pane attached={false}>Tab 2 Content</Tab.Pane>,
+    },
+  ];
+
+  // useEffect(() => {
+  //   // getAllMembers();
+  // }, []);
   return (
-    <>
-      <Form>
-        <Grid columns="equal">
-          <Grid.Column>
-            <DashboardSidebar />
-          </Grid.Column>
+    <div>
+      <DashboardSidebar />
+      <Grid className="px-4 py-2">
+        <Grid.Column>
+          <div className="header-block">
+            <Grid columns="equal">
+              <Grid.Column>
+                <h3>Reports</h3>
+              </Grid.Column>
+              <Grid.Column floated="right">
+                <Icon name="calendar alternate" />
+                17 September 2023 - 23 September 2023
+              </Grid.Column>
+            </Grid>
+          </div>
 
-          <Grid.Column width={13}>
-            <div className="header-block">
-              <Grid columns="equal">
-                <Grid.Column>
-                  <h3>New Giving Entry</h3>
-                </Grid.Column>
-              </Grid>
-            </div>
-            <div className="overflow-x">
-              <Table size="large" singleLine columns={15} celled selectable>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell>Name</Table.HeaderCell>
-                    <Table.HeaderCell>Tithe</Table.HeaderCell>
-                    <Table.HeaderCell>Building Fund</Table.HeaderCell>
-                    <Table.HeaderCell>Best Gift</Table.HeaderCell>
-                    <Table.HeaderCell>FEBC 700</Table.HeaderCell>
-                    <Table.HeaderCell>Gift for Pastor</Table.HeaderCell>
-                    <Table.HeaderCell>Gift for Bro/Sis</Table.HeaderCell>
-                    <Table.HeaderCell>Children's Ministry</Table.HeaderCell>
-                    <Table.HeaderCell>Flower/Plants</Table.HeaderCell>
-                    <Table.HeaderCell>L&S Youth</Table.HeaderCell>
-                    <Table.HeaderCell>Dance</Table.HeaderCell>
-                    <Table.HeaderCell>Meralco/Maynilad</Table.HeaderCell>
-                    <Table.HeaderCell>Music</Table.HeaderCell>
-                    <Table.HeaderCell>Others</Table.HeaderCell>
-                    <Table.HeaderCell>Total</Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Dropdown
-                        placeholder="Select Member"
-                        fluid
-                        selection
-                        options={allMembers}
-                        className="dropdown"
-                        onChange={handleMemberChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="tithe"
-                        type="number"
-                        value={formData.tithe}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="buildingFund"
-                        type="number"
-                        value={formData.buildingFund}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="bestGift"
-                        type="number"
-                        value={formData.bestGift}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="fEBC700"
-                        type="number"
-                        value={formData.fEBC700}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="giftForPastor"
-                        type="number"
-                        value={formData.giftForPastor}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="giftForBrother"
-                        type="number"
-                        value={formData.giftForBrother}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="childrensMinistry"
-                        type="number"
-                        value={formData.childrensMinistry}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="flowerOrPlants"
-                        type="number"
-                        value={formData.flowerOrPlants}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="youth"
-                        type="number"
-                        value={formData.youth}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="dance"
-                        type="number"
-                        value={formData.dance}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="meralco"
-                        type="number"
-                        value={formData.meralco}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="music"
-                        type="number"
-                        value={formData.music}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="others"
-                        type="number"
-                        value={formData.others}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Form.Input
-                        name="total"
-                        type="number"
-                        value={formData.total}
-                        onChange={handleChange}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-
-                <Table.Footer fullWidth>
-                  <Table.Row>
-                    <Table.HeaderCell colSpan="16">
-                      <Button
-                        floated="right"
-                        icon
-                        labelPosition="left"
-                        primary
-                        size="small"
-                        onClick={handleSubmit}
-                      >
-                        <Icon name="like" /> Save
-                      </Button>
-                      <Button
-                        floated="right"
-                        icon
-                        labelPosition="left"
-                        size="small"
-                        onClick={handleSubmit}
-                      >
-                        <Icon name="cancel" /> Cancel
-                      </Button>
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Footer>
-              </Table>
-            </div>
-          </Grid.Column>
-        </Grid>
-      </Form>
-    </>
+          <Grid columns="equal">
+            <Grid.Column>
+              <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+            </Grid.Column>
+          </Grid>
+        </Grid.Column>
+      </Grid>
+    </div>
   );
 };
 
