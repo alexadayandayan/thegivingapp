@@ -3,7 +3,13 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { Grid, Icon, Form, Tab, Message } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import { IReportFormState } from "../Data/report";
-import { getDaysInMonth, startOfWeek } from "date-fns";
+import {
+  addWeeks,
+  endOfWeek,
+  format,
+  getDaysInMonth,
+  startOfWeek,
+} from "date-fns";
 
 const GivingTest: React.FC = () => {
   const navigate = useNavigate();
@@ -45,7 +51,7 @@ const GivingTest: React.FC = () => {
     useState(getNumberOfWeeksInMonth());
 
   useEffect(() => {
-    const newOptions = [];
+    const newOptions = [{ key: 0, text: "All Weeks", value: 0 }];
     for (let i = 1; i <= numberOfWeeksInCurrentMonth; i++) {
       newOptions.push({
         key: i,
@@ -90,7 +96,16 @@ const GivingTest: React.FC = () => {
     { key: "F", text: "Female", value: "female" },
   ];
 
-  // this is not yet working but will enhance oc
+  const handleYearChange = (
+    _e: React.SyntheticEvent<HTMLElement, Event>,
+    data: any
+  ) => {
+    setFormData({
+      ...formData,
+      year: data.value,
+    });
+  };
+
   const handleMonthChange = (
     _e: React.SyntheticEvent<HTMLElement, Event>,
     data: any
@@ -103,13 +118,58 @@ const GivingTest: React.FC = () => {
     setNumberOfWeeksInSelectedMonth(getNumberOfWeeksInMonth());
   };
 
+  const handleWeekChange = (
+    _e: React.SyntheticEvent<HTMLElement, Event>,
+    data: any
+  ) => {
+    setFormData({
+      ...formData,
+      week: data.value,
+    });
+  };
+  const handleGenderChange = (
+    _e: React.SyntheticEvent<HTMLElement, Event>,
+    data: any
+  ) => {
+    setFormData({
+      ...formData,
+      gender: data.value,
+    });
+  };
+
+  const getFirstAndLastWeekDate = () => {
+    const year = formData.year;
+    const month = formData.month; // October
+    const week = formData.week - 1; // October
+
+    // Calculate the first day of the month
+    const firstDayOfMonth = new Date(year, month - 1, 1);
+
+    // Calculate the start date by given week
+    const startDateOfSecondWeek = addWeeks(startOfWeek(firstDayOfMonth), week);
+
+    // Calculate the end date of the second week
+    const endDateOfSecondWeek = endOfWeek(
+      addWeeks(startOfWeek(firstDayOfMonth), week)
+    );
+
+    const formattedStartDate = format(startDateOfSecondWeek, "yyyy-MM-dd");
+    const formattedEndDate = format(endDateOfSecondWeek, "yyyy-MM-dd");
+
+    console.log(formattedStartDate); // Start date of the second week
+    console.log(formattedEndDate);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const createGiving = await window.api.createOffering(formData);
-    if (createGiving !== "Success") {
-      return;
-    }
-    navigate("/giving");
+    // const createGiving = await window.api.createOffering(formData);
+    // if (createGiving !== "Success") {
+    //   return;
+    // }
+    // navigate("/giving");
+    getFirstAndLastWeekDate();
+
+    console.log(formData);
   };
 
   const panes = [
@@ -130,6 +190,7 @@ const GivingTest: React.FC = () => {
                 options={yearOptions}
                 value={formData.year}
                 placeholder="Select Year"
+                onChange={handleYearChange}
               />
               <Form.Select
                 fluid
@@ -148,17 +209,21 @@ const GivingTest: React.FC = () => {
                 options={options}
                 value={formData.week}
                 placeholder="Select Week"
+                onChange={handleWeekChange}
               />
 
               <Form.Select
                 fluid
                 label="Gender"
-                options={options}
+                options={genderOptions}
                 value={formData.gender}
                 placeholder="Select Gender"
+                onChange={handleGenderChange}
               />
             </Form.Group>
-            <Form.Button positive>Generate</Form.Button>
+            <Form.Button onClick={handleSubmit} positive>
+              Generate
+            </Form.Button>
           </Form>
         </Tab.Pane>
       ),
@@ -169,9 +234,6 @@ const GivingTest: React.FC = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   // getAllMembers();
-  // }, []);
   return (
     <div>
       <DashboardSidebar />
