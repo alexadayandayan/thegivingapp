@@ -3,10 +3,12 @@ import { app, BrowserWindow } from "electron";
 import { logout } from "./store";
 import { GivingApi } from "./api/giving.api";
 import { MemberApi } from "./api/member.api";
+import { ReportApi } from "./api/report.api";
 import { LoginApi } from "./api/login.api";
 
 ///////////////////////////////////// IPC HANDLERS //////////////////////////////
 GivingApi();
+ReportApi();
 MemberApi();
 LoginApi();
 ////////////////////////////////////////////////////////////////////////////////

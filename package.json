@@ -2,7 +2,7 @@
   "name": "the-giving-app",
   "homepage": "https://alexadayandayan.github.io/thegivingapp/",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
@@ -20,6 +20,7 @@
     "date-fns": "^2.30.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-store": "^8.1.0",
+    "file-saver": "^2.0.5",
     "jquery": "^3.7.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -34,11 +35,13 @@
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
     "sqlite3": "^5.1.6",
-    "vite-tsconfig-paths": "^4.2.1"
+    "vite-tsconfig-paths": "^4.2.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.2.0",
     "@types/bcryptjs": "^2.4.4",
+    "@types/file-saver": "^2.0.6",
     "@types/jquery": "^3.5.25",
     "@types/react": "^18.2.21",
     "@types/react-big-calendar": "^1.8.3",
