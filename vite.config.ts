@@ -23,6 +23,7 @@ export default defineConfig({
                 "api/login.api",
                 "api/giving.api",
                 "api/member.api",
+                "api/report.api",
               ],
             },
           },

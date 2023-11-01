@@ -2,7 +2,7 @@
   "name": "the-giving-app",
   "homepage": "https://alexadayandayan.github.io/thegivingapp/",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",

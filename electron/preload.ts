@@ -1,5 +1,6 @@
 import { IGiving } from "@/Data/giving";
 import { IMember } from "@/Data/member";
+import { IReport } from "@/Data/report";
 import { IUser } from "@/Data/user";
 import { contextBridge, ipcRenderer } from "electron";
 
@@ -26,6 +27,8 @@ const WINDOW_API = {
   createOffering: (args: IGiving) => ipcRenderer.invoke("createOffering", args),
   updateOffering: (args: IGiving) => ipcRenderer.invoke("updateOffering", args),
   deleteOffering: (id: string) => ipcRenderer.invoke("deleteOffering", id),
+
+  getReports: (args: IReport) => ipcRenderer.invoke("getReports", args),
 };
 
 contextBridge.exposeInMainWorld("api", WINDOW_API);

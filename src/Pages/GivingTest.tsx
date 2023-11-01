@@ -1,8 +1,7 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
 import React, { FormEvent, useEffect, useState } from "react";
 import { Grid, Icon, Form, Tab, Message } from "semantic-ui-react";
-import { useNavigate } from "react-router";
-import { IReportFormState } from "../Data/report";
+import { IReport, IReportFormState } from "../Data/report";
 import {
   addWeeks,
   endOfWeek,
@@ -12,9 +11,6 @@ import {
 } from "date-fns";
 
 const GivingTest: React.FC = () => {
-  const navigate = useNavigate();
-
-  // const [allMembers, setAllMembers] = useState<any[]>([]);
   const [formData, setFormData] = useState<IReportFormState | any>({
     year: "",
     month: "",
@@ -83,13 +79,6 @@ const GivingTest: React.FC = () => {
     { key: "Nov", text: "November", value: "11" },
     { key: "Dec", text: "December", value: "12" },
   ];
-  let weekOptions = [
-    { key: "all", text: "All Weeks", value: 0 },
-    { key: "week1", text: "Week 1", value: 1 },
-    { key: "week2", text: "Week 2", value: 2 },
-    { key: "week3", text: "Week 3", value: 3 },
-    { key: "week4", text: "Week 4", value: 4 },
-  ];
   const genderOptions = [
     { key: "A", text: "All", value: "all" },
     { key: "M", text: "Male", value: "male" },
@@ -156,20 +145,21 @@ const GivingTest: React.FC = () => {
     const formattedStartDate = format(startDateOfSecondWeek, "yyyy-MM-dd");
     const formattedEndDate = format(endDateOfSecondWeek, "yyyy-MM-dd");
 
-    console.log(formattedStartDate); // Start date of the second week
-    console.log(formattedEndDate);
+    return { startDate: formattedStartDate, endDate: formattedEndDate };
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // const createGiving = await window.api.createOffering(formData);
-    // if (createGiving !== "Success") {
-    //   return;
-    // }
-    // navigate("/giving");
-    getFirstAndLastWeekDate();
+    const dates = getFirstAndLastWeekDate();
+    const data = {
+      startDate: dates.startDate,
+      endDate: dates.endDate,
+      gender: formData.gender,
+    };
+    const reports = (await window.api.getReports(data)) as IReport | any;
 
-    console.log(formData);
+    console.log(dates);
+    console.log(reports);
   };
 
   const panes = [
