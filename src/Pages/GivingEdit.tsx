@@ -16,7 +16,6 @@ import {
 const GivingEdit: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: number | any }>();
-  const slicedId = id?.slice(1, -1);
   const [formData, setFormData] = useState<IOfferingFormState>({
     bestGift: 0,
     buildingFund: 0,
@@ -38,7 +37,7 @@ const GivingEdit: React.FC = () => {
   });
 
   const getMemberOffering = async () => {
-    const member = await window.api.getOfferingById(slicedId);
+    const member = await window.api.getOfferingById(+id);
     const x = lowerCaseKeys(member);
     setFormData({
       ...x,
@@ -56,7 +55,7 @@ const GivingEdit: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const updateMember = await window.api.updateOffering({
-      id: slicedId,
+      id: +id,
       giving: formData,
     });
     if (updateMember !== "Success") {

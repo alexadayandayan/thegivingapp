@@ -3,6 +3,10 @@ import { getAllQuery } from "../query";
 
 const ReportApi = () => {
   ipcMain.handle("getReports", async (_event, arg) => {
+    const whereClause =
+      arg.gender === "all"
+        ? `WHERE strftime('%Y-%m-%d', EntryDate) BETWEEN '${arg.startDate}' AND '${arg.endDate}' AND M.Gender IN ('male','female');`
+        : `WHERE strftime('%Y-%m-%d', EntryDate) BETWEEN '${arg.startDate}' AND '${arg.endDate}' AND M.Gender = '${arg.gender}';`;
     const q = `
                 SELECT
                 M.Firstname,
@@ -27,9 +31,8 @@ const ReportApi = () => {
                 Giving AS C
             INNER JOIN Members AS M ON
                 C.MemberId = M.Id
-            WHERE 
-                strftime('%Y-%m-%d', EntryDate) BETWEEN '${arg.startDate}' AND '${arg.endDate}' 
-                AND M.Gender = '${arg.gender}';`;
+            ${whereClause}
+            `;
 
     const data = await getAllQuery(q);
     return data;
