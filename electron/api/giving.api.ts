@@ -63,6 +63,36 @@ const GivingApi = () => {
     return data;
   });
 
+  ipcMain.handle("getOfferingByDate", async (_event, date) => {
+    const q = `SELECT
+      C.Id as Id,
+      M.Firstname,
+      M.Lastname,
+      M.Gender,
+      C.Tithe,
+      C.BuildingFund,
+      C.BestGift,
+      C.GiftForPastor,
+      C.GiftForBrother,
+      C.Youth,
+      C.FlowerOrPlants,
+      C.FEBC700,
+      C.Dance,
+      C.Music,
+      C.Meralco,
+      C.ChildrensMinistry,
+      C.Others,
+      C.Total,
+      C.EntryDate
+    FROM
+      Giving AS C
+      INNER JOIN Members AS M ON
+      C.MemberId = M.Id
+        WHERE C.EntryDate = '${date}'`;
+    const data = await getQuery(q);
+    return data;
+  });
+
   ipcMain.handle(
     "createOffering",
     async (_event, args: IOfferingFormState | any) => {

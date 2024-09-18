@@ -16,7 +16,6 @@ export default function DashboardSidebar() {
     var today = new Date();
     var curHr = today.getHours();
   
-  
     if (curHr < 12) {
       greeting = "Morning";
     } else if (curHr < 18) {
@@ -59,10 +58,10 @@ export default function DashboardSidebar() {
 
     return (
         <>
-            <Segment inverted className='rounded-0 d-flex justify-content-between'>
+            <Segment className='!bg-blue-950 !text-white rounded-0 flex justify-between'>
                 
-                <h3 className='d-flex align-items-center mb-0'>Good {greeting}, {currentUser.Name}!</h3>
-                <Menu className='mt-0' inverted pointing secondary>
+                <h3 className='flex items-center mb-0'>Good {greeting}, {currentUser.Name}!</h3>
+                <Menu className='mt-0 ' inverted pointing secondary>
                     <Menu.Item as='a' onClick={onDashboard}>
                         <img src={tgaLogo} className="logo-small" alt="TGA logo" />
                         Dashboard

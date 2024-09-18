@@ -47,7 +47,7 @@ export const optionsAnnually = {
         },
         title: {
             display: true,
-            text: d.getFullYear() + " Collection",
+            text: "Year " + d.getFullYear() + " Collection",
         },
     },
 };
@@ -66,8 +66,6 @@ export const dataAnnually = {
 
 export default function DashboardYearly() {
     return (
-
         <Line options={optionsAnnually} data={dataAnnually} />
-
     );
 }

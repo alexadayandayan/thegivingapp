@@ -1,6 +1,6 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Button, Grid, Icon, Table, Form, Dropdown } from "semantic-ui-react";
+import { Button, Grid, Icon, Table, Form, FormGroup, FormField, Input, TextArea, Select, Checkbox, Message } from "semantic-ui-react";
 import { useNavigate } from "react-router";
 import { IMember } from "../Data/member";
 import { IOfferingFormState } from "../Data/giving";
@@ -8,6 +8,7 @@ import { IOfferingFormState } from "../Data/giving";
 const GivingTest: React.FC = () => {
   const navigate = useNavigate();
   const [allMembers, setAllMembers] = useState<any[]>([]);
+  const [selectedMember, setSelectedMember] = useState<any[]>([]);
   const [formData, setFormData] = useState<IOfferingFormState | any>({
     bestGift: 0,
     buildingFund: 0,
@@ -45,13 +46,18 @@ const GivingTest: React.FC = () => {
     });
   };
 
-  const handleMemberChange = (
+  const handleMemberChange = async (
     _e: React.SyntheticEvent<HTMLElement, Event>,
     data: any
   ) => {
+    const members = (await window.api.getMemberById(data.value)) as IMember | any;
+    setSelectedMember(members.Firstname);
     setFormData({
       ...formData,
-      memberId: data.value,
+      memberId: members.Id,
+      firstname: members.Firstname,
+      lastname: members.Lastname,
+      gender: members.Gender,
     });
   };
 
@@ -67,195 +73,207 @@ const GivingTest: React.FC = () => {
   useEffect(() => {
     getAllMembers();
   }, []);
+
   return (
     <>
       <DashboardSidebar />
-      <Form>
-        <Grid className="px-4 py-2">
-          <Grid.Column>
-            <div className="header-block">
-              <Grid columns="equal">
-                <Grid.Column>
-                  <h3>New Giving Entry</h3>
-                </Grid.Column>
-              </Grid>
-            </div>
-            <Table size="large" celled selectable fixed>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Name</Table.HeaderCell>
-                  <Table.HeaderCell>Tithe</Table.HeaderCell>
-                  <Table.HeaderCell>Building Fund</Table.HeaderCell>
-                  <Table.HeaderCell>Best Gift</Table.HeaderCell>
-                  <Table.HeaderCell>FEBC 700</Table.HeaderCell>
-                  <Table.HeaderCell>Gift for Pastor</Table.HeaderCell>
-                  <Table.HeaderCell>Gift for Bro/Sis</Table.HeaderCell>
-                  <Table.HeaderCell>Children's Ministry</Table.HeaderCell>
-                  <Table.HeaderCell>Flower/Plants</Table.HeaderCell>
-                  <Table.HeaderCell>L&S Youth</Table.HeaderCell>
-                  <Table.HeaderCell>Dance</Table.HeaderCell>
-                  <Table.HeaderCell>Meralco/Maynilad</Table.HeaderCell>
-                  <Table.HeaderCell>Music</Table.HeaderCell>
-                  <Table.HeaderCell>Others</Table.HeaderCell>
-                  <Table.HeaderCell>Total</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell>
-                    <Dropdown
-                      placeholder="Select Member"
-                      fluid
-                      selection
-                      options={allMembers}
-                      className="dropdown"
-                      onChange={handleMemberChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="tithe"
-                      type="number"
-                      value={formData.tithe}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="buildingFund"
-                      type="number"
-                      value={formData.buildingFund}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="bestGift"
-                      type="number"
-                      value={formData.bestGift}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="fEBC700"
-                      type="number"
-                      value={formData.fEBC700}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="giftForPastor"
-                      type="number"
-                      value={formData.giftForPastor}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="giftForBrother"
-                      type="number"
-                      value={formData.giftForBrother}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="childrensMinistry"
-                      type="number"
-                      value={formData.childrensMinistry}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="flowerOrPlants"
-                      type="number"
-                      value={formData.flowerOrPlants}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="youth"
-                      type="number"
-                      value={formData.youth}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="dance"
-                      type="number"
-                      value={formData.dance}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="meralco"
-                      type="number"
-                      value={formData.meralco}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="music"
-                      type="number"
-                      value={formData.music}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="others"
-                      type="number"
-                      value={formData.others}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Form.Input
-                      name="total"
-                      type="number"
-                      value={formData.total}
-                      onChange={handleChange}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
 
-              <Table.Footer>
-                <Table.Row>
-                  <Table.HeaderCell colSpan="15">
-                    <Button
-                      floated="right"
-                      icon
-                      labelPosition="left"
-                      primary
-                      size="small"
-                      onClick={handleSubmit}
-                    >
-                      <Icon name="like" /> Save
-                    </Button>
-                    <Button
-                      floated="right"
-                      icon
-                      labelPosition="left"
-                      size="small"
-                      onClick={handleSubmit}
-                    >
-                      <Icon name="cancel" /> Cancel
-                    </Button>
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Footer>
-            </Table>
-          </Grid.Column>
+      <div className="px-4 py-2">
+        <Grid>
+          <Grid.Row>
+            <Grid.Column>
+              <h2 className="font-bold text-[24px] mb-0">New Giving Entry</h2>
+            </Grid.Column>
+          </Grid.Row>
+            
+          <Grid.Row>
+            <Grid.Column>
+              <Form success className="w-full">
+                <Message
+                  success
+                  header='Form Completed'
+                  content="Successfully added a giving entry for selectedMember." 
+                />
+                <Grid columns='4' divided>
+                  <Grid.Row>
+                    <Grid.Column>
+                      <div className="bg-white rounded-md shadow-3 p-10">
+                        <FormField
+                          control={Select}
+                          options={allMembers}
+                          label="Select Member"
+                          placeholder='Select Member'
+                          search
+                          searchInput={{ id: 'form-select-control-member' }}
+                          onChange={handleMemberChange}
+                        />
+                        <FormField
+                          id='form-input-control-member-id'
+                          control={Input}
+                          label='Member ID'
+                          value={formData.memberId}
+                          placeholder='Member ID'
+                          readOnly
+                        />
+                        <FormField
+                          id='form-input-control-first-name'
+                          control={Input}
+                          label='First name'
+                          value={formData.firstname}
+                          placeholder='First name'
+                          readOnly
+                        />
+                        <FormField
+                          id='form-input-control-last-name'
+                          control={Input}
+                          label='Last name'
+                          value={formData.lastname}
+                          placeholder='Last name'
+                          readOnly
+                        />
+                        <FormField
+                          id='form-input-control-gender'
+                          control={Input}
+                          label='Gender'
+                          value={formData.gender}
+                          placeholder='Gender'
+                          readOnly
+                        />
+                      </div>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <FormGroup>
+                        <FormField
+                          id='form-input-control-tithe'
+                          control={Input}
+                          type='number'
+                          label='Tithe'
+                          placeholder='0'
+                        />
+                        <FormField
+                          id='form-input-control-bldg-fund'
+                          control={Input}
+                          type='number'
+                          label='Building Fund'
+                          placeholder='0'
+                        />
+                        <FormField
+                          id='form-input-control-best-gift'
+                          control={Input}
+                          type='number'
+                          label='Best Gift to the Lord'
+                          placeholder='0'
+                        />
+                        <FormField
+                          id='form-input-control-seed-faith'
+                          control={Input}
+                          type='number'
+                          label='Seed Faith'
+                          placeholder='0'
+                          readOnly
+                        />
+                      </FormGroup>
+                      <FormGroup widths='equal'>
+                          <FormField
+                            id='form-input-control-pastor'
+                            control={Input}
+                            type='number'
+                            label='Gift for Pastor'
+                            placeholder='0'
+                          />
+                          <div className="flex gap-2">                      
+                            <FormField
+                              control={Select}
+                              options={allMembers}
+                              label="Gift for Bro/Sis"
+                              placeholder='Select Member'
+                              search
+                              searchInput={{ id: 'form-select-control-gift-member' }}
+                            />
+
+                            <FormField
+                              id='form-input-control-brethren'
+                              control={Input}
+                              type='number'
+                              label='&nbsp;'
+                              placeholder='0'
+                            /> 
+                          </div>
+                          <FormField
+                            id='form-input-control-febc'
+                            control={Input}
+                            type='number'
+                            label='FEBC 700'
+                            placeholder='0'
+                          />
+                          <FormField
+                            id='form-input-control-utilities'
+                            control={Input}
+                            type='number'
+                            label='Utilities'
+                            placeholder='0'
+                          />                 
+                      </FormGroup>
+                      <FormGroup widths='equal'>
+                          <FormField
+                            id='form-input-control-children'
+                            control={Input}
+                            type='number'
+                            label="Children"
+                            placeholder='0'
+                          />  
+                          <FormField
+                            id='form-input-control-youth'
+                            control={Input}
+                            type='number'
+                            label='Youth'
+                            placeholder='0'
+                          />
+                          <FormField
+                            id='form-input-control-dance'
+                            control={Input}
+                            type='number'
+                            label='Dance'
+                            placeholder='0'
+                          />
+                          <FormField
+                            id='form-input-control-music'
+                            control={Input}
+                            type='number'
+                            label='Music'
+                            placeholder='0'
+                          />
+                          <FormField
+                            id='form-input-control-flowers'
+                            control={Input}
+                            type='number'
+                            label='Flower/Plants'
+                            placeholder='0'
+                          />
+                      </FormGroup>
+                      <FormGroup widths='equal'>
+                        <FormField
+                          id='form-input-control-others'
+                          control={TextArea}
+                          label='Others'
+                          placeholder='Others'
+                        />
+                        
+                      </FormGroup>
+                      <FormField
+                        control={Checkbox}
+                        label='I confirmed that the details entered are correct.'
+                      />
+                    </Grid.Column> 
+                    <FormField control={Button}>Submit</FormField>
+                  </Grid.Row>
+                </Grid>
+              </Form>
+
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
-      </Form>
+      </div>
     </>
   );
 };

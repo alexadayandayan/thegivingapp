@@ -24,6 +24,7 @@ const WINDOW_API = {
 
   getOfferings: () => ipcRenderer.invoke("getOfferings"),
   getOfferingById: (id: string) => ipcRenderer.invoke("getOfferingById", id),
+  getOfferingByDate: (date: string) => ipcRenderer.invoke("getOfferingByDate", date),
   createOffering: (args: IGiving) => ipcRenderer.invoke("createOffering", args),
   updateOffering: (args: IGiving) => ipcRenderer.invoke("updateOffering", args),
   deleteOffering: (id: string) => ipcRenderer.invoke("deleteOffering", id),

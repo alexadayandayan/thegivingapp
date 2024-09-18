@@ -1,11 +1,12 @@
 import DashboardSidebar from "../Components/DashboardSidebar";
 import React, { useState, useEffect } from "react";
-import { Button, Grid, Icon, Table, Confirm, Message } from "semantic-ui-react";
+import { Button, Grid, Icon, Table, Confirm, Message} from "semantic-ui-react";
 import { IGiving } from "../Data/giving";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { format } from 'date-fns';
 import InfiniteScroll from "react-infinite-scroller";
+//import moment from 'moment';
 
 const Giving: React.FC = () => {
   let navigate = useNavigate();
@@ -15,13 +16,27 @@ const Giving: React.FC = () => {
   const [selectedID, setSelectedID] = useState(null);
   const [notificationStatus, setNotificationStatus] = useState("");
 
+  const getDateToday = () => {
+    const currentDate: any = new Date();
+    //const date = moment(currentDate);
+    //var weekNumber = date.isoWeek();
+
+    return format(currentDate,'MM/dd/yyyy');
+  };
+
+  useEffect(() => {
+    getOfferings();
+    getDateToday()
+  }, []);
 
   const getOfferings = async () => {
     // Set a loading state before making the API call
     setLoading(true);
     try {
+      //const giving = (await window.api.getOfferingByDate(getDateToday())) as IGiving | any;
       const giving = (await window.api.getOfferings()) as IGiving | any;
       setData(giving);
+      setLoading(false);
     } catch (error) {
       // Handle errors, e.g., display an error message to the user
       console.error("Error fetching data:", error);
@@ -57,28 +72,13 @@ const Giving: React.FC = () => {
     navigate("/giving-add");
   };
 
-  const getDateToday = () => {
-    const currentDate: any = new Date();
-    const startDate: any = new Date(currentDate.getFullYear(), 0, 1);
-    var days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
-
-    var weekNumber = Math.ceil(days / 7);
-
-    // Display the calculated result
-    console.log("Week number of " + currentDate + " is : " + weekNumber);
-  };
-
-  useEffect(() => {
-    getOfferings();
-    getDateToday()
-  }, []);
-
   const itemsPerPage = 10;
-  const [hasMore, setHasMore] = useState(data.length > itemsPerPage ? false : true);
-  const [records, setrecords] = useState(itemsPerPage);
+  const [hasMore, setHasMore] = useState(data && data.length > itemsPerPage ? false : true);
+  const [records, setRecords] = useState(itemsPerPage);
+
   const showItems = (posts: string | any[]) => {
     var items = [];    
-    if(posts.length) {
+    if(posts && posts.length > 0) {
       for (var i = 0; i < records; i++) {    
         if(posts[i] != undefined) {
           items.push(
@@ -120,107 +120,115 @@ const Giving: React.FC = () => {
     }
     return items;
   };
-  const loadMore = () => {
-    if (records === data.length) {
-      setHasMore(false);
-    } else {
-      setTimeout(() => {
-        setrecords(records + itemsPerPage);
-      }, 2000);
+  const handleLoadMore = () => {
+    if(data && data.length) {
+      if (records === data.length) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+        setTimeout(() => {
+          setRecords(records + itemsPerPage);
+        }, 2000);
+      }
     }
   };
 
   return (
     <>
       <DashboardSidebar />
-      <Grid className="px-4 py-2">
-        <Grid.Column>
-          <div className="header-block">
-            <Grid columns="equal">
-              <Grid.Column>
-                <h3>Giving for Today</h3>
-              </Grid.Column>
-              <Grid.Column>
-                <Button
-                  floated="right"
-                  icon
-                  labelPosition="left"
-                  primary
-                  size="small"
-                  onClick={onGivingAdd}
-                >
-                  <Icon name="like" /> Add Giving Entry
-                </Button>
-              </Grid.Column>
-            </Grid>
-          </div>
+        <Grid className="px-4 py-2">
+          <Grid.Row>
+            <Grid.Column>
+              <div className="header-block">
+                <Grid columns="equal">
+                  <Grid.Column>
+                    <h3>Giving for Today</h3>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Button
+                      floated="right"
+                      icon
+                      labelPosition="left"
+                      primary
+                      size="small"
+                      onClick={onGivingAdd}
+                    >
+                      <Icon name="like" /> Add Giving Entry
+                    </Button>
+                  </Grid.Column>
+                </Grid>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row className="relative">
+            <Grid.Column>
+              {notificationStatus && 
+                (notificationStatus === "success" ? (
+                  <Message              
+                    success
+                    header='Deletion Status'
+                    content="Successful entry deletion."
+                  />
+                ) : (
+                  <Message              
+                    negative
+                    header='Deletion Status'
+                    content="Failed in entry deletion."
+                  />
+                )
+              )}
 
-          {notificationStatus && 
-            (notificationStatus === "success" ? (
-              <Message              
-                success
-                header='Deletion Status'
-                content="Successful entry deletion."
-              />
-            ) : (
-              <Message              
-                negative
-                header='Deletion Status'
-                content="Failed in entry deletion."
-              />
-            )
-          )}
+              {loading ? (
+                <div className="loader-wrapper">
+                  <span className="loader"></span>
+                </div>
+              ) : (              
+                <div className="content-wrapper overflow-x-hidden relative h-full">
+                  <Confirm
+                    open={showPopup}
+                    header='Confirm entry deletion'
+                    onCancel={() => {setShowPopup(false); setNotificationStatus('')}}
+                    onConfirm={handleDelete}
+                  />     
+                  <InfiniteScroll
+                      pageStart={0}
+                      loadMore={handleLoadMore}
+                      hasMore={hasMore}
+                      //loader={<div className="absolute top-0 left-0 flex items-center justify-center w-full h-full"><span className="loader" key={0}></span></div>}
+                      useWindow={false}
+                    >
+                    <Table size="large" celled selectable>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell>Name</Table.HeaderCell>
+                          <Table.HeaderCell>Tithe</Table.HeaderCell>
+                          <Table.HeaderCell>Building Fund</Table.HeaderCell>
+                          <Table.HeaderCell>Best Gift</Table.HeaderCell>
+                          <Table.HeaderCell>FEBC 700</Table.HeaderCell>
+                          <Table.HeaderCell>Gift for Pastor</Table.HeaderCell>
+                          <Table.HeaderCell>Gift for Bro/Sis</Table.HeaderCell>
+                          <Table.HeaderCell>Children's Ministry</Table.HeaderCell>
+                          <Table.HeaderCell>Flower/Plants</Table.HeaderCell>
+                          <Table.HeaderCell>L&S Youth</Table.HeaderCell>
+                          <Table.HeaderCell>Dance</Table.HeaderCell>
+                          <Table.HeaderCell>Meralco/Maynilad</Table.HeaderCell>
+                          <Table.HeaderCell>Music</Table.HeaderCell>
+                          <Table.HeaderCell>Others</Table.HeaderCell>
+                          <Table.HeaderCell>Total</Table.HeaderCell>
+                          <Table.HeaderCell>Entry Date</Table.HeaderCell>
+                          <Table.HeaderCell colSpan="2">Actions</Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
 
-          {loading ? (
-            <div className="loader-wrapper">
-              <span className="loader"></span>
-            </div>
-          ) : (              
-            <div className="content-wrapper">
-              <Confirm
-                open={showPopup}
-                header='Confirm entry deletion'
-                onCancel={() => {setShowPopup(false); setNotificationStatus('')}}
-                onConfirm={handleDelete}
-              />     
-              <InfiniteScroll
-                  pageStart={0}
-                  loadMore={loadMore}
-                  hasMore={hasMore}
-                  loader={<span className="loader"></span>}
-                  useWindow={false}
-                >
-                <Table size="large" celled fixed selectable>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>Name</Table.HeaderCell>
-                      <Table.HeaderCell>Tithe</Table.HeaderCell>
-                      <Table.HeaderCell>Building Fund</Table.HeaderCell>
-                      <Table.HeaderCell>Best Gift</Table.HeaderCell>
-                      <Table.HeaderCell>FEBC 700</Table.HeaderCell>
-                      <Table.HeaderCell>Gift for Pastor</Table.HeaderCell>
-                      <Table.HeaderCell>Gift for Bro/Sis</Table.HeaderCell>
-                      <Table.HeaderCell>Children's Ministry</Table.HeaderCell>
-                      <Table.HeaderCell>Flower/Plants</Table.HeaderCell>
-                      <Table.HeaderCell>L&S Youth</Table.HeaderCell>
-                      <Table.HeaderCell>Dance</Table.HeaderCell>
-                      <Table.HeaderCell>Meralco/Maynilad</Table.HeaderCell>
-                      <Table.HeaderCell>Music</Table.HeaderCell>
-                      <Table.HeaderCell>Others</Table.HeaderCell>
-                      <Table.HeaderCell>Total</Table.HeaderCell>
-                      <Table.HeaderCell>Entry Date</Table.HeaderCell>
-                      <Table.HeaderCell colSpan="2">Actions</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-
-                  <Table.Body>
-                    {showItems(data)}
-                  </Table.Body>
-                </Table>
-              </InfiniteScroll>           
-            </div>
-          )}
-        </Grid.Column>
+                      <Table.Body>
+                        {showItems(data)}
+                      </Table.Body>
+                    </Table>
+                  </InfiniteScroll>           
+                </div>
+              )}
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </>
   );
