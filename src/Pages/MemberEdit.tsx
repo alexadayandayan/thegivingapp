@@ -14,7 +14,6 @@ import { Form, Button, Grid, Message, Icon } from "semantic-ui-react";
 const MemberEdit: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: number | any }>();
-  const slicedId = id?.slice(1, -1);
   const [formData, setFormData] = useState<IMemberFormState>({
     firstname: "",
     lastname: "",
@@ -30,11 +29,11 @@ const MemberEdit: React.FC = () => {
   });
 
   const getMember = async () => {
-    const member = await window.api.getMemberById(id?.slice(1, -1));
+    const member = await window.api.getMemberById(+id);
     const x = lowerCaseKeys(member);
     setFormData({
       ...x,
-      isActive: x.isActive?.toString(),
+      isActive: x?.isActive?.toString(),
     });
   };
   const imageInput = useRef<HTMLInputElement>(null);
@@ -97,7 +96,7 @@ const MemberEdit: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const updateMember = await window.api.updateMember({
-      id: slicedId,
+      id: +id,
       member: formData,
     });
     if (updateMember !== "Success") {
